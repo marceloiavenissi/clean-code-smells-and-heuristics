@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Base Classes Depending on Their Derivatives | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Base Classes Depending on Their Derivatives" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The most common reason for partitioning concepts into base and derivative classes is so that the higher level base class concepts can be independent of the lower level derivative class concepts. Therefore, when we see base classes mentioning the names of their derivatives, we suspect a problem. In general, base classes should know nothing about their derivatives." />
+<meta property="og:description" content="The most common reason for partitioning concepts into base and derivative classes is so that the higher level base class concepts can be independent of the lower level derivative class concepts. Therefore, when we see base classes mentioning the names of their derivatives, we suspect a problem. In general, base classes should know nothing about their derivatives." />
+<link rel="canonical" href="http://localhost:4000/general/g7-base-classes-depending-on-their-derivatives.html" />
+<meta property="og:url" content="http://localhost:4000/general/g7-base-classes-depending-on-their-derivatives.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Base Classes Depending on Their Derivatives" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"The most common reason for partitioning concepts into base and derivative classes is so that the higher level base class concepts can be independent of the lower level derivative class concepts. Therefore, when we see base classes mentioning the names of their derivatives, we suspect a problem. In general, base classes should know nothing about their derivatives.","headline":"Base Classes Depending on Their Derivatives","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g7-base-classes-depending-on-their-derivatives.html"},"url":"http://localhost:4000/general/g7-base-classes-depending-on-their-derivatives.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G7: Base Classes Depending on Their Derivatives</h2>
+<p>The most common reason for partitioning concepts into base and derivative classes is so that the higher level base class concepts can be independent of the lower level derivative class concepts.
+Therefore, when we see base classes mentioning the names of their derivatives, we suspect a problem.
+In general, base classes should know nothing about their derivatives.</p>
+
+<p>There are exceptions to this rule, of course.
+Sometimes the number of derivatives is strictly fixed, and the base class has code that selects between the derivatives.
+We see this a lot in finite state machine implementations.
+However, in that case the derivatives and base class are strongly coupled and always deploy together in the same jar file.
+In the general case we want to be able to deploy derivatives and bases in different jar files.</p>
+
+<p>Deploying derivatives and bases in different jar files and making sure the base jar files know nothing about the contents of the derivative jar files allows us to deploy our systems in discrete and independent components.
+When such components are modified, they can be redeployed without having to redeploy the base components.
+This means that the impact of change is greatly lessened, and maintaining systems in the field is made much simpler.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

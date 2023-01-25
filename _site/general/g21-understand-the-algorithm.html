@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Understand the Algorithm | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Understand the Algorithm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Lots of very funny code is written because people don’t take the time to understand the algorithm. They get something to work by plugging in enough if statements and flags, without really stopping to consider what is really going on." />
+<meta property="og:description" content="Lots of very funny code is written because people don’t take the time to understand the algorithm. They get something to work by plugging in enough if statements and flags, without really stopping to consider what is really going on." />
+<link rel="canonical" href="http://localhost:4000/general/g21-understand-the-algorithm.html" />
+<meta property="og:url" content="http://localhost:4000/general/g21-understand-the-algorithm.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Understand the Algorithm" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Lots of very funny code is written because people don’t take the time to understand the algorithm. They get something to work by plugging in enough if statements and flags, without really stopping to consider what is really going on.","headline":"Understand the Algorithm","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g21-understand-the-algorithm.html"},"url":"http://localhost:4000/general/g21-understand-the-algorithm.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G21: Understand the Algorithm</h2>
+<p>Lots of very funny code is written because people don’t take the time to understand the algorithm.
+They get something to work by plugging in enough <code class="language-plaintext highlighter-rouge">if</code> statements and flags, without really stopping to consider what is really going on.</p>
+
+<p>Programming is often an exploration. You <em>think</em> you know the right algorithm for something, but then you wind up fiddling with it, prodding and poking at it, until you get it to “work”.
+How do you know it “works”?
+Because it passes the test cases you can think of.</p>
+
+<p>There is nothing wrong with this approach. Indeed, often it is the only way to get a function to do what you think it should.
+However, it is not sufficient to leave the quotation marks around the work “work”.</p>
+
+<p>Before you consider yourself to be done with a function, make sure you <em>understand</em> how it works.
+It is not good enough that it passes all the tests.
+You must <em>know</em><sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">1</a></sup> that the solution is correct.</p>
+
+<p>Often the best way to gain this knowledge and understanding is to refactor the function into something that is so clean and expressive that it is <em>obvious</em> how it works.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:10" role="doc-endnote">
+      <p>There is a difference between knowing how the code works and knowing whether the algorithm will do the job required of it. Being unsure that an algorithm is appropriate is often a fact of life. Being unsure what your code does is just laziness. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

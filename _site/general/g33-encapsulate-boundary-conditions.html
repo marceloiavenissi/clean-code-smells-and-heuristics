@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Encapsulate Boundary Conditions | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Encapsulate Boundary Conditions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Boundary conditions are hard to keep track of. Put the processing of them in one place. Don’t let them leak all over the code. We don’t want swarms of +1s and -1s scatter hither and yon. Consider this simple example for FIT:" />
+<meta property="og:description" content="Boundary conditions are hard to keep track of. Put the processing of them in one place. Don’t let them leak all over the code. We don’t want swarms of +1s and -1s scatter hither and yon. Consider this simple example for FIT:" />
+<link rel="canonical" href="http://localhost:4000/general/g33-encapsulate-boundary-conditions.html" />
+<meta property="og:url" content="http://localhost:4000/general/g33-encapsulate-boundary-conditions.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Encapsulate Boundary Conditions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Boundary conditions are hard to keep track of. Put the processing of them in one place. Don’t let them leak all over the code. We don’t want swarms of +1s and -1s scatter hither and yon. Consider this simple example for FIT:","headline":"Encapsulate Boundary Conditions","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g33-encapsulate-boundary-conditions.html"},"url":"http://localhost:4000/general/g33-encapsulate-boundary-conditions.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G33: Encapsulate Boundary Conditions</h2>
+<p>Boundary conditions are hard to keep track of.
+Put the processing of them in one place.
+Don’t let them leak all over the code.
+We don’t want swarms of <code class="language-plaintext highlighter-rouge">+1</code>s and <code class="language-plaintext highlighter-rouge">-1</code>s scatter hither and yon.
+Consider this simple example for FIT:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span><span class="o">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">tags</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Parse</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="n">tags</span><span class="o">,</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">endTag</span><span class="o">);</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Notice that <code class="language-plaintext highlighter-rouge">level + 1</code> appears twice.
+This is a boundary condition that should be encapsulated within a variable named something like <code class="language-plaintext highlighter-rouge">nextLevel</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">int</span> <span class="n">nextLevel</span> <span class="o">=</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">nextLevel</span> <span class="o">&lt;</span> <span class="n">tags</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Parse</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="n">tags</span><span class="o">,</span> <span class="n">nextLevel</span><span class="o">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">endTag</span><span class="o">);</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

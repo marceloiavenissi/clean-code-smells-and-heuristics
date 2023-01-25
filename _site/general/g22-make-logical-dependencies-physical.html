@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Make Logical Dependencies Physical | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Make Logical Dependencies Physical" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="If one module depends upon another, that dependency should be physical, not just logical. The dependent module should not make assumptions (in other words, logical dependencies) about the module it depends upon. Rather it should ask that module for all the information it depends upon." />
+<meta property="og:description" content="If one module depends upon another, that dependency should be physical, not just logical. The dependent module should not make assumptions (in other words, logical dependencies) about the module it depends upon. Rather it should ask that module for all the information it depends upon." />
+<link rel="canonical" href="http://localhost:4000/general/g22-make-logical-dependencies-physical.html" />
+<meta property="og:url" content="http://localhost:4000/general/g22-make-logical-dependencies-physical.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Make Logical Dependencies Physical" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"If one module depends upon another, that dependency should be physical, not just logical. The dependent module should not make assumptions (in other words, logical dependencies) about the module it depends upon. Rather it should ask that module for all the information it depends upon.","headline":"Make Logical Dependencies Physical","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g22-make-logical-dependencies-physical.html"},"url":"http://localhost:4000/general/g22-make-logical-dependencies-physical.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G22: Make Logical Dependencies Physical</h2>
+<p>If one module depends upon another, that dependency should be physical, not just logical.
+The dependent module should not make assumptions (in other words, logical dependencies) about the module it depends upon.
+Rather it should ask that module for all the information it depends upon.</p>
+
+<p>For example, imagine that you are writing a function that prints a plain text report of hours worked by employees.
+One class named <code class="language-plaintext highlighter-rouge">HourlyReporter</code> gathers all the data into a convenient form and then passes it to <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> to print it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyReporter</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">HourlyReportFormatter</span> <span class="n">formatter</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">LineItem</span><span class="o">&gt;</span> <span class="n">page</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">PAGE_SIZE</span> <span class="o">=</span> <span class="mi">55</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">HourlyReporter</span><span class="o">(</span><span class="nc">HourlyReportFormatter</span> <span class="n">formatter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">formatter</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">;</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">LineItem</span><span class="o">&gt;();</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">generateReporter</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">HourlyEmployee</span><span class="o">&gt;</span> <span class="n">employees</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span> <span class="o">:</span> <span class="n">employees</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">addLineItemToPage</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">page</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="no">PAGE_SIZE</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">printAndClearItemList</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">page</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">printAndClearItemList</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">printAndClearItemList</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">formatter</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">page</span><span class="o">);</span>
+    <span class="n">page</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addLineItemToPage</span><span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">LineItem</span> <span class="n">item</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LineItem</span><span class="o">();</span>
+    <span class="n">item</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="n">item</span><span class="o">.</span><span class="na">hours</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()</span> <span class="o">/</span> <span class="mi">10</span><span class="o">;</span>
+    <span class="n">item</span><span class="o">.</span><span class="na">tenths</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()</span> <span class="o">%</span> <span class="mi">10</span><span class="o">;</span>
+    <span class="n">page</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">class</span> <span class="nc">LineItem</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">hours</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">tenths</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This code has a logical dependency that has not been physicalized.
+Can you spot it?
+It is the constant <code class="language-plaintext highlighter-rouge">PAGE_SIZE</code>.
+Why should the <code class="language-plaintext highlighter-rouge">HourlyReporter</code> know the size of the page?
+Page size should be the responsibility of the <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code>.</p>
+
+<p>The fact that PAGE_SIZE is declared in <code class="language-plaintext highlighter-rouge">HourlyReporter</code> represents a misplaced responsibility <a href="/general/g17-misplaced-responsibility.html">[G17]</a> that causes <code class="language-plaintext highlighter-rouge">HourlyReporter</code> to assume that it knows what the page size ought to be.
+Such an assumption is a logical dependency.
+<code class="language-plaintext highlighter-rouge">HourlyReporter</code> depends on the face that <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> can deal with page sizes of 55.
+If some implementation of <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> could not deal with such sizes, then there would be an error.</p>
+
+<p>We can physicalize this dependency by creating a new method in <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> name <code class="language-plaintext highlighter-rouge">getMaxPageSize()</code>. <code class="language-plaintext highlighter-rouge">HourlyReporter</code> will then call that function rather than using the <code class="language-plaintext highlighter-rouge">PAGE_SIZE</code> constant.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

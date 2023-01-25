@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Replace Magic Numbers with Named Constants | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Replace Magic Numbers with Named Constants" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is probably one of the oldest rules in software development. I remember reading it in the late sixties in introductory COBOL, FORTRAN, and PL/I manuals. In general it is a bad idea to have raw numbers in your code. you should hide them behind well-named constants." />
+<meta property="og:description" content="This is probably one of the oldest rules in software development. I remember reading it in the late sixties in introductory COBOL, FORTRAN, and PL/I manuals. In general it is a bad idea to have raw numbers in your code. you should hide them behind well-named constants." />
+<link rel="canonical" href="http://localhost:4000/general/g25-replace-magic-numbers-with-named-constants.html" />
+<meta property="og:url" content="http://localhost:4000/general/g25-replace-magic-numbers-with-named-constants.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Replace Magic Numbers with Named Constants" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"This is probably one of the oldest rules in software development. I remember reading it in the late sixties in introductory COBOL, FORTRAN, and PL/I manuals. In general it is a bad idea to have raw numbers in your code. you should hide them behind well-named constants.","headline":"Replace Magic Numbers with Named Constants","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g25-replace-magic-numbers-with-named-constants.html"},"url":"http://localhost:4000/general/g25-replace-magic-numbers-with-named-constants.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G25: Replace Magic Numbers with Named Constants</h2>
+<p>This is probably one of the oldest rules in software development.
+I remember reading it in the late sixties in introductory COBOL, FORTRAN, and PL/I manuals.
+In general it is a bad idea to have raw numbers in your code.
+you should hide them behind well-named constants.</p>
+
+<p>For example, the number 86,400 should be hidden behind the constant <code class="language-plaintext highlighter-rouge">SECONDS_PER_DAY</code>.
+If you are printing 55 lines per page, then the constant 55 should be hidden behind the constant <code class="language-plaintext highlighter-rouge">LINES_PER_PAGE</code>.</p>
+
+<p>Some constants are so easy to recognize that they don’t always need a named constant to hide behind so long as they are used in conjunction with very self-explanatory code.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">double</span> <span class="n">milesWalked</span> <span class="o">=</span> <span class="n">feetWalked</span> <span class="o">/</span> <span class="mf">5280.0</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">dailyPay</span> <span class="o">=</span> <span class="n">hourlyRate</span> <span class="o">*</span> <span class="mi">8</span><span class="o">;</span>
+  <span class="kt">double</span> <span class="n">circumference</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="nc">Math</span><span class="o">.</span><span class="na">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>Do we really need the constants <code class="language-plaintext highlighter-rouge">FEET_PER_MILE</code>, <code class="language-plaintext highlighter-rouge">WORK_HOURS_PER_DAY</code>, and <code class="language-plaintext highlighter-rouge">TWO</code> in the above examples?
+Clearly, the last case is absurd.
+There are some formulae in which constants are simply better written as raw numbers.
+You might quibble about the <code class="language-plaintext highlighter-rouge">WORK_HOURS_PER_DAY</code> case because the laws or conventions might change.
+On the other hand, that formula reads so nicely with the 8 in it that I would be reluctant to add 17 extra characters to the readers’ burden.
+And in the <code class="language-plaintext highlighter-rouge">FEET_PER_MILE</code> case, the number 5280 is so very well known and so unique a constant that readers would recognize it even if it stood alone on a page with no context surrounding it.</p>
+
+<p>Constants like 3.141592653589793 are also very well known and easily recognizable.
+However, the chance for error is too great to leave them raw.
+Every time someone sees 3.1415927535890793, they know what it is π, and so they fail to scrutinize it.
+(Did you catch the single-digit error?) We also don’t want people using 3.14, 3.1459, 3.142, and so forth.
+Therefore, it is a good thing that Math.PI has already been defined for us.</p>
+
+<p>The term “Magic Number” does not apply only to numbers.
+It applies to any token that has value that is not self-describing.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">assertEqual</span><span class="o">(</span><span class="mi">7777</span><span class="o">,</span> <span class="nc">Employee</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="s">"John Doe"</span><span class="o">).</span><span class="na">employeeNumber</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p>There are two magic numbers in this assertion.
+The first is obviously 7777, though what it might mean is not obvious.
+The second magic number is <code class="language-plaintext highlighter-rouge">"John Doe,"</code> and again the intent is not clear.</p>
+
+<p>It turns out that <code class="language-plaintext highlighter-rouge">"John Doe"</code> is the name of employee #7777 in a well-known test database created by out team.
+Everyone in the team knows that when you connect to this database, it will have several employees already cooked into it with well-known values and attributes.
+It also turns out that <code class="language-plaintext highlighter-rouge">"John Doe"</code> represents the sole hourly employee in that test database.
+So this test should really read:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">assertEqual</span><span class="o">(</span>
+    <span class="no">HOURLY_EMPLOYEE_ID</span><span class="o">,</span>
+    <span class="nc">Employee</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="no">HOURLY_EMPLOYEE_NAME</span><span class="o">).</span><span class="na">employeeNumber</span><span class="o">());</span>
+</code></pre></div></div>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

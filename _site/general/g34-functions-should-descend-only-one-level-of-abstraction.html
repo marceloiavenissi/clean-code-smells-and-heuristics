@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Functions Should Descend Only One Level of Abstraction | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Functions Should Descend Only One Level of Abstraction" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The statements within a function should all be written at the same level of abstraction, which should be one level below the operation described by the name of the function. This may be the hardest of these heuristics to interpret and follow. Though the idea is plain enough, humans are just far too good at seamlessly mixing levels of abstraction. Consider, for example, the following code taken from FitNesse:" />
+<meta property="og:description" content="The statements within a function should all be written at the same level of abstraction, which should be one level below the operation described by the name of the function. This may be the hardest of these heuristics to interpret and follow. Though the idea is plain enough, humans are just far too good at seamlessly mixing levels of abstraction. Consider, for example, the following code taken from FitNesse:" />
+<link rel="canonical" href="http://localhost:4000/general/g34-functions-should-descend-only-one-level-of-abstraction.html" />
+<meta property="og:url" content="http://localhost:4000/general/g34-functions-should-descend-only-one-level-of-abstraction.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Functions Should Descend Only One Level of Abstraction" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"The statements within a function should all be written at the same level of abstraction, which should be one level below the operation described by the name of the function. This may be the hardest of these heuristics to interpret and follow. Though the idea is plain enough, humans are just far too good at seamlessly mixing levels of abstraction. Consider, for example, the following code taken from FitNesse:","headline":"Functions Should Descend Only One Level of Abstraction","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g34-functions-should-descend-only-one-level-of-abstraction.html"},"url":"http://localhost:4000/general/g34-functions-should-descend-only-one-level-of-abstraction.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G34: Functions Should Descend Only One Level of Abstraction</h2>
+<p>The statements within a function should all be written at the same level of abstraction, which should be one level below the operation described by the name of the function.
+This may be the hardest of these heuristics to interpret and follow.
+Though the idea is plain enough, humans are just far too good at seamlessly mixing levels of abstraction.
+Consider, for example, the following code taken from FitNesse:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">render</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">StringBuffer</span> <span class="n">html</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"&lt;hr"</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">html</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">" size=\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">);</span>
+    <span class="n">html</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&gt;"</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>A moment’s study and you can see what’s going on.
+This function constructs the HTML tag that draws a horizontal rule across the page.
+The height of that rule is specified in the <code class="language-plaintext highlighter-rouge">size</code> variable.</p>
+
+<p>Now look again.
+This method is mixing at least two levels of abstraction.
+The first is the notion that a horizontal rule has a size.
+The second is the syntax of the <code class="language-plaintext highlighter-rouge">HR</code> tag itself.
+This code comes from the <code class="language-plaintext highlighter-rouge">HruleWidget</code> module in FitNesse.
+This module detects a row of four or more dashes and converts it into the appropriate HR tag.
+The more dashes, the larger the size.</p>
+
+<p>I refactored this but of code as follows.
+Note that I changed the name of the size field to reflect its true purpose.
+It held the number of extra dashes.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">render</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="nc">HtmlTag</span> <span class="n">hr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HtmlTag</span><span class="o">(</span><span class="s">"hr"</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">extraDashes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">hr</span><span class="o">.</span><span class="na">addAttributes</span><span class="o">(</span><span class="s">"size"</span><span class="o">,</span> <span class="n">hrSize</span><span class="o">(</span><span class="n">extraDashes</span><span class="o">));</span>
+    <span class="k">return</span> <span class="n">hr</span><span class="o">.</span><span class="na">html</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">String</span> <span class="nf">hrSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">height</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">hrSize</span> <span class="o">=</span> <span class="n">height</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%d"</span><span class="o">,</span> <span class="n">hrSize</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This change separates the two levels of abstraction nicely.
+The <code class="language-plaintext highlighter-rouge">render</code> function simply constructs a HR tag, without having to know anything about the HTML syntax of that tag.
+The <code class="language-plaintext highlighter-rouge">HtmlTag</code> module takes care of all the nasty syntax issues.</p>
+
+<p>Indeed, by making this change I caught a subtle error.
+the original code did not put the closing slash on the HR tag, as the XHTML standard would have it.
+(In other words, it emitted <code class="language-plaintext highlighter-rouge">&lt;hr&gt;</code> instead of <code class="language-plaintext highlighter-rouge">&lt;hr/&gt;</code>.)
+The <code class="language-plaintext highlighter-rouge">HtmlTag</code> module had been changed to conform to XHTML long ago.</p>
+
+<p>Separating levels of abstraction is one of the most important functions of refactoring, and it’s one of the hardest to do well.
+As an example, look at the code below.
+This was my first attempt at separating the abstraction levels in the <code class="language-plaintext highlighter-rouge">HruleWidget.render</code> method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">render</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="nc">HtmlTag</span> <span class="n">hr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HtmlTag</span><span class="o">(</span><span class="s">"hr"</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">hr</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"size"</span><span class="o">,</span> <span class="s">""</span><span class="o">+(</span><span class="n">size</span><span class="o">+</span><span class="mi">1</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">hr</span><span class="o">.</span><span class="na">html</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>My goal, at this point, was to create the necessary the necessary separation and get the tests to pass.
+I accomplished that goal easily, but the result was a function that <em>still</em> had mixed levels of abstraction.
+In this case the mixed levels were the construction of the HR tag and the interpretation and formatting of the <code class="language-plaintext highlighter-rouge">size</code> variable.
+This points out that when you break a function along lines of abstraction, you often uncover new lines of abstraction that were obscured by the previous structure.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

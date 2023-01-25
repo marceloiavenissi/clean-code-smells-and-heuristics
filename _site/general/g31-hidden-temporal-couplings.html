@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Hidden Temporal Couplings | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Hidden Temporal Couplings" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Temporal couplings are often necessary, but you should not hide the coupling. Structure the arguments of your functions such that the order in which they should be called is obvious. Consider the following:" />
+<meta property="og:description" content="Temporal couplings are often necessary, but you should not hide the coupling. Structure the arguments of your functions such that the order in which they should be called is obvious. Consider the following:" />
+<link rel="canonical" href="http://localhost:4000/general/g31-hidden-temporal-couplings.html" />
+<meta property="og:url" content="http://localhost:4000/general/g31-hidden-temporal-couplings.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Hidden Temporal Couplings" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Temporal couplings are often necessary, but you should not hide the coupling. Structure the arguments of your functions such that the order in which they should be called is obvious. Consider the following:","headline":"Hidden Temporal Couplings","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g31-hidden-temporal-couplings.html"},"url":"http://localhost:4000/general/g31-hidden-temporal-couplings.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G31: Hidden Temporal Couplings</h2>
+<p>Temporal couplings are often necessary, but you should not hide the coupling.
+Structure the arguments of your functions such that the order in which they should be called is obvious.
+Consider the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MoogDiver</span> <span class="o">{</span>
+    <span class="nc">Gradient</span> <span class="n">gradient</span><span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Spline</span><span class="o">&gt;</span> <span class="n">splines</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">dive</span><span class="o">(</span><span class="nc">String</span> <span class="n">reason</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">saturateGradient</span><span class="o">();</span>
+      <span class="n">reticulateSplines</span><span class="o">();</span>
+      <span class="n">diveForMoog</span><span class="o">(</span><span class="n">reason</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The order of the three functions is important.
+You must saturate the gradient before you can reticulate the splines, and only then can you dive for the moog.
+Unfortunately, the code does not enforce this temporal coupling.
+Another programmer could call <code class="language-plaintext highlighter-rouge">reticulateSplines</code> before <code class="language-plaintext highlighter-rouge">saturateGradient</code> was called, leading to an <code class="language-plaintext highlighter-rouge">UnsaturatedGradientException</code>.
+A better solutions is:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MoogDiver</span> <span class="o">{</span>
+    <span class="nc">Gradient</span> <span class="n">gradient</span><span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Spline</span><span class="o">&gt;</span> <span class="n">splines</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">dive</span><span class="o">(</span><span class="nc">String</span> <span class="n">reason</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">Gradient</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">saturateGradient</span><span class="o">();</span>
+      <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Spline</span><span class="o">&gt;</span> <span class="n">splines</span> <span class="o">=</span> <span class="n">reticulateSplines</span><span class="o">(</span><span class="n">gradient</span><span class="o">);</span>
+      <span class="n">diveForMoog</span><span class="o">(</span><span class="n">splines</span><span class="o">,</span> <span class="n">reason</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This exposes the temporal coupling by creating a bucket brigade.
+Each function produces a result that the next function needs, so there is no reasonable way to call them out of order.</p>
+
+<p>You might complain that this increases the complexity of the functions, and you’d be right.
+But that extra syntactic complexity exposes the true temporal complexity of the situation.</p>
+
+<p>Note that I left the instance variables in place. I presume that they are needed by private methods in the class.
+Even so, I want the arguments in place to make the temporal coupling explicit.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

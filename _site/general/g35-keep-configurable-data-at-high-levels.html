@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Keep Configurable Data at High Levels | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Keep Configurable Data at High Levels" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="If you have a constant such as a default or configuration value that is known and expected at a high level of abstraction, do not bury it in a low-level function. Expose it as an argument to that low-level function called from the high-level function. Consider the following code from FitNesse:" />
+<meta property="og:description" content="If you have a constant such as a default or configuration value that is known and expected at a high level of abstraction, do not bury it in a low-level function. Expose it as an argument to that low-level function called from the high-level function. Consider the following code from FitNesse:" />
+<link rel="canonical" href="http://localhost:4000/general/g35-keep-configurable-data-at-high-levels.html" />
+<meta property="og:url" content="http://localhost:4000/general/g35-keep-configurable-data-at-high-levels.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Keep Configurable Data at High Levels" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"If you have a constant such as a default or configuration value that is known and expected at a high level of abstraction, do not bury it in a low-level function. Expose it as an argument to that low-level function called from the high-level function. Consider the following code from FitNesse:","headline":"Keep Configurable Data at High Levels","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g35-keep-configurable-data-at-high-levels.html"},"url":"http://localhost:4000/general/g35-keep-configurable-data-at-high-levels.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G35: Keep Configurable Data at High Levels</h2>
+<p>If you have a constant such as a default or configuration value that is known and expected at a high level of abstraction, do not bury it in a low-level function.
+Expose it as an argument to that low-level function called from the high-level function.
+Consider the following code from FitNesse:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="nc">Arguments</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">parseCommandLine</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Arguments</span>
+  <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DEFAULT_PATH</span> <span class="o">=</span> <span class="s">"."</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DEFAULT_ROOT</span> <span class="o">=</span> <span class="s">"FitNesseRoot"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT_PORT</span> <span class="o">=</span> <span class="mi">80</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT_VERSION_DAYS</span> <span class="o">=</span> <span class="mi">14</span><span class="o">;</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The command-line arguments are parsed in the very first executable line of FitNesse.
+The default values of those arguments are specified at the top of the <code class="language-plaintext highlighter-rouge">Argument</code> class.
+You don’t have to go looking in low levels of the system for statements like this one:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(</span><span class="n">arguments</span><span class="o">.</span><span class="na">port</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="c1">// use 80 by default</span>
+</code></pre></div></div>
+
+<p>The configuration constants reside at a very high level and are easy to change.
+They get passed down to the rest of the application.
+The lower levels of the application do not own the values of these constants.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

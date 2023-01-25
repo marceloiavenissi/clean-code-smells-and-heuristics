@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Avoid Transitive Navigation | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Avoid Transitive Navigation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="In general we don’t want a single module to know much about its collaborators. More specifically, if A collaborates with B, and B collaborates with C, we don’t want modules that use A to know about C. (For example, we don’t want a.getB().getC().doSomething();.)" />
+<meta property="og:description" content="In general we don’t want a single module to know much about its collaborators. More specifically, if A collaborates with B, and B collaborates with C, we don’t want modules that use A to know about C. (For example, we don’t want a.getB().getC().doSomething();.)" />
+<link rel="canonical" href="http://localhost:4000/general/g36-avoid-transitive-navigation.html" />
+<meta property="og:url" content="http://localhost:4000/general/g36-avoid-transitive-navigation.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Avoid Transitive Navigation" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"In general we don’t want a single module to know much about its collaborators. More specifically, if A collaborates with B, and B collaborates with C, we don’t want modules that use A to know about C. (For example, we don’t want a.getB().getC().doSomething();.)","headline":"Avoid Transitive Navigation","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g36-avoid-transitive-navigation.html"},"url":"http://localhost:4000/general/g36-avoid-transitive-navigation.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G36: Avoid Transitive Navigation</h2>
+<p>In general we don’t want a single module to know much about its collaborators.
+More specifically, if <code class="language-plaintext highlighter-rouge">A</code> collaborates with <code class="language-plaintext highlighter-rouge">B</code>, and <code class="language-plaintext highlighter-rouge">B</code> collaborates with <code class="language-plaintext highlighter-rouge">C</code>, we don’t want modules that use <code class="language-plaintext highlighter-rouge">A</code> to know about <code class="language-plaintext highlighter-rouge">C</code>. (For example, we don’t want <code class="language-plaintext highlighter-rouge">a.getB().getC().doSomething();</code>.)</p>
+
+<p>This is sometimes called the Law of Demeter.
+The Pragmatic Programmers call it “Writing Shy Code.”[^12]
+In either case it comes down to making sure that modules know only about their immediate collaborators and do not know the navigation map of the whole system.</p>
+
+<p>If many modules used some form of the statement <code class="language-plaintext highlighter-rouge">a.getB().getC()</code>, then it would be difficult to change the design and architecture to interpose a <code class="language-plaintext highlighter-rouge">Q</code> between <code class="language-plaintext highlighter-rouge">B</code> and <code class="language-plaintext highlighter-rouge">C</code>.
+You’d have to find every instance of <code class="language-plaintext highlighter-rouge">a.getB().getC()</code> and convert it to <code class="language-plaintext highlighter-rouge">a.getB().getQ().getC()</code>.
+This is how architectures become rigid.
+Too many modules know too much about the architecture.</p>
+
+<p>Rather we want our immediate collaborators to offer all the services we need.
+We should not have to roam through the object graph of the system, hunting for the method we want to call.
+Rather we should simply be able to say:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">myCollaborator</span><span class="o">.</span><span class="na">doSomething</span><span class="o">()</span>
+</code></pre></div></div>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

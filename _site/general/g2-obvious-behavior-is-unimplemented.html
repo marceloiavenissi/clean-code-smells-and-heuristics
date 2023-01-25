@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Obvious Behavior Is Unimplemented | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Obvious Behavior Is Unimplemented" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Following “The Principle of Least Surprise”, any function of class should implement the behaviors that another programmer could reasonably expect. For example, consider a function that translates the name of a day to an enum that represents the day." />
+<meta property="og:description" content="Following “The Principle of Least Surprise”, any function of class should implement the behaviors that another programmer could reasonably expect. For example, consider a function that translates the name of a day to an enum that represents the day." />
+<link rel="canonical" href="http://localhost:4000/general/g2-obvious-behavior-is-unimplemented.html" />
+<meta property="og:url" content="http://localhost:4000/general/g2-obvious-behavior-is-unimplemented.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Obvious Behavior Is Unimplemented" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Following “The Principle of Least Surprise”, any function of class should implement the behaviors that another programmer could reasonably expect. For example, consider a function that translates the name of a day to an enum that represents the day.","headline":"Obvious Behavior Is Unimplemented","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g2-obvious-behavior-is-unimplemented.html"},"url":"http://localhost:4000/general/g2-obvious-behavior-is-unimplemented.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G2: Obvious Behavior Is Unimplemented</h2>
+<p>Following “<a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">The Principle of Least Surprise</a>”, any function of class should implement the behaviors that another programmer could reasonably expect. For example, consider a function that translates the name of a day to an <code class="language-plaintext highlighter-rouge">enum</code> that represents the day.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Day</span> <span class="n">day</span> <span class="o">=</span> <span class="nc">DayDate</span><span class="o">.</span><span class="na">StringToDay</span><span class="o">(</span><span class="nc">String</span> <span class="n">dayName</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>We would expect the string “Monday” to be translated to Day.MONDAY. We would also expect the common abbreviations to be translated, and we would expect the function to ignore case.</p>
+
+<p>When an obvious behavior is not implemented, readers and users of the code can no longer depend on their intuition about function names. They lose their trust in the original author and must fall back on reading the details of the code.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

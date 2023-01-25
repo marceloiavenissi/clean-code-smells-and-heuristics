@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Names Should Describe Side-Effects | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Names Should Describe Side-Effects" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Names should describe everything that a function, variable, or class is or does. Don’t hide the effects with a name. Do’t use a simple verb to describe a function that does more than just a simple action. For example, consider this code from TestNG:" />
+<meta property="og:description" content="Names should describe everything that a function, variable, or class is or does. Don’t hide the effects with a name. Do’t use a simple verb to describe a function that does more than just a simple action. For example, consider this code from TestNG:" />
+<link rel="canonical" href="http://localhost:4000/names/n7-names-should-describe-side-effects.html" />
+<meta property="og:url" content="http://localhost:4000/names/n7-names-should-describe-side-effects.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Names Should Describe Side-Effects" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Names should describe everything that a function, variable, or class is or does. Don’t hide the effects with a name. Do’t use a simple verb to describe a function that does more than just a simple action. For example, consider this code from TestNG:","headline":"Names Should Describe Side-Effects","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/names/n7-names-should-describe-side-effects.html"},"url":"http://localhost:4000/names/n7-names-should-describe-side-effects.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>N7: Names Should Describe Side-Effects</h2>
+<p>Names should describe everything that a function, variable, or class is or does.
+Don’t hide the effects with a name.
+Do’t use a simple verb to describe a function that does more than just a simple action.
+For example, consider this code from TestNG:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">ObjectOutputStream</span> <span class="nf">getOos</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">m_oos</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">m_oos</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectOutputStream</span><span class="o">(</span><span class="n">m_socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">m_oos</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This function does a bit more than get an “oos”; it creates the “oos” if it hasn’t been created already.
+Thus, a better name might be <code class="language-plaintext highlighter-rouge">createOrReturnOos</code>.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

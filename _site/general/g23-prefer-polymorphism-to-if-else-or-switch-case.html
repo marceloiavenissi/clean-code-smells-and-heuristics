@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Prefer Polymorphism to If/Else or Switch/Case | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Prefer Polymorphism to If/Else or Switch/Case" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This might seem a strange suggestion given the topic of Chapter 6. After all, in that chapter I make the point that switch statements are probably appropriate in the parts of the system where adding new functions is more likely than adding new types." />
+<meta property="og:description" content="This might seem a strange suggestion given the topic of Chapter 6. After all, in that chapter I make the point that switch statements are probably appropriate in the parts of the system where adding new functions is more likely than adding new types." />
+<link rel="canonical" href="http://localhost:4000/general/g23-prefer-polymorphism-to-if-else-or-switch-case.html" />
+<meta property="og:url" content="http://localhost:4000/general/g23-prefer-polymorphism-to-if-else-or-switch-case.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Prefer Polymorphism to If/Else or Switch/Case" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"This might seem a strange suggestion given the topic of Chapter 6. After all, in that chapter I make the point that switch statements are probably appropriate in the parts of the system where adding new functions is more likely than adding new types.","headline":"Prefer Polymorphism to If/Else or Switch/Case","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g23-prefer-polymorphism-to-if-else-or-switch-case.html"},"url":"http://localhost:4000/general/g23-prefer-polymorphism-to-if-else-or-switch-case.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G23: Prefer Polymorphism to If/Else or Switch/Case</h2>
+<p>This might seem a strange suggestion given the topic of Chapter 6.
+After all, in that chapter I make the point that switch statements are probably appropriate in the parts of the system where adding new functions is more likely than adding new types.</p>
+
+<p>First, most people use switch statements because it’s the obvious brute force solution, not because it’s the right solution for the situation.
+So this heuristic is here to remind us to consider polymorphism before using a switch.</p>
+
+<p>Second, the cases where functions are more volatile than types are relatively rare.
+So <em>every</em> switch statement should be suspect.</p>
+
+<p>I use the following “ONE SWITCH” rule: <em>There may be no more than one switch statement for a given type of selection.</em>
+<em>The cases in that switch statement must create polymorphic objects that take the place of other switch statements in the rest of the system.</em></p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Function Names Should Say What They Do | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Function Names Should Say What They Do" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Look at this code:" />
+<meta property="og:description" content="Look at this code:" />
+<link rel="canonical" href="http://localhost:4000/general/g20-function-names-should-say-what-they-do.html" />
+<meta property="og:url" content="http://localhost:4000/general/g20-function-names-should-say-what-they-do.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Function Names Should Say What They Do" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Look at this code:","headline":"Function Names Should Say What They Do","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g20-function-names-should-say-what-they-do.html"},"url":"http://localhost:4000/general/g20-function-names-should-say-what-they-do.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G20: Function Names Should Say What They Do</h2>
+<p>Look at this code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">Date</span> <span class="n">newDate</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Would you expect this to add five days to the date?
+Or is it weeks, or hours?
+Is the <code class="language-plaintext highlighter-rouge">date</code> instance changed or does the function just return a new <code class="language-plaintext highlighter-rouge">Date</code> without changing the old one?
+<em>You can’t tell from the call what the function does.</em></p>
+
+<p>If the function adds five days to the date and changes the date, then it should be called <code class="language-plaintext highlighter-rouge">addDaysTo</code> or <code class="language-plaintext highlighter-rouge">increaseByDays</code>.
+If, on the other hand, the function returns a new date that is five days later but does not change the date instance, it should be called <code class="language-plaintext highlighter-rouge">daysLater</code> or <code class="language-plaintext highlighter-rouge">daysSince</code>.</p>
+
+<p>If you have to look at the implementation (or documentation) of the function to know what it does, then you should work to find a better name or rearrange the functionality so that it can be placed in functions with better names.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

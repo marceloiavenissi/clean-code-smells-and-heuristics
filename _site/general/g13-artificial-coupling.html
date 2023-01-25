@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Artificial Coupling | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Artificial Coupling" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Things that don’t depend upon each other should not be artificially coupled. For example, general enums should not be contained within more specific classes because this forces the whole application to know about these more specific classes. The same goes for general purpose static functions being declared in specific classes." />
+<meta property="og:description" content="Things that don’t depend upon each other should not be artificially coupled. For example, general enums should not be contained within more specific classes because this forces the whole application to know about these more specific classes. The same goes for general purpose static functions being declared in specific classes." />
+<link rel="canonical" href="http://localhost:4000/general/g13-artificial-coupling.html" />
+<meta property="og:url" content="http://localhost:4000/general/g13-artificial-coupling.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Artificial Coupling" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"Things that don’t depend upon each other should not be artificially coupled. For example, general enums should not be contained within more specific classes because this forces the whole application to know about these more specific classes. The same goes for general purpose static functions being declared in specific classes.","headline":"Artificial Coupling","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g13-artificial-coupling.html"},"url":"http://localhost:4000/general/g13-artificial-coupling.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G13: Artificial Coupling</h2>
+<p>Things that don’t depend upon each other should not be artificially coupled.
+For example, general <code class="language-plaintext highlighter-rouge">enums</code> should not be contained within more specific classes because this forces the whole application to know about these more specific classes.
+The same goes for general purpose <code class="language-plaintext highlighter-rouge">static</code> functions being declared in specific classes.</p>
+
+<p>In general an artificial coupling is a coupling between two modules that serves no direct purpose.
+It is a result of putting a variable, constant, or function in a temporarily convenient, though inappropriate, location.
+This is lazy and careless.</p>
+
+<p>Take the time to figure out where functions, constants, and variables ought to be declared.
+Don’t just toss them in the most convenient place at hand and then leave them there.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

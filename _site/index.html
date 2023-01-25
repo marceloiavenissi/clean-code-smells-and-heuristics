@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Clean Code: Smells and Heuristics | A linkable reference of code smells and heuristics for better code reviews.</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Clean Code: Smells and Heuristics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A linkable reference of code smells and heuristics for better code reviews." />
+<meta property="og:description" content="A linkable reference of code smells and heuristics for better code reviews." />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Clean Code: Smells and Heuristics" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"A linkable reference of code smells and heuristics for better code reviews.","headline":"Clean Code: Smells and Heuristics","name":"Clean Code: Smells and Heuristics","url":"http://localhost:4000/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      Uncle Bob has <a href="https://twitter.com/unclebobmartin/status/1513641219376795662">followed up with me</a> to inform me that I may need his publisher's permission to keep this site up.
+
+I've written to them and will bring the site back up if permission is granted 🤞
+
+If permission is not granted then perhaps there is an opportunity to create a new website that allows people to easily create their own custom sets of linkable code rules. If this interests you please leave your thoughts on <a href="https://forms.gle/S8RJ56Bm1A89sLzq6">this Google Form</a>.
+<!-- <p>
+    Below is a copy of the 'Smells and Heuristics' chapter from Bob Martin's excellent book: <a href="https://www.google.com/search?q=clean+code">Clean Code</a>.
+    If you benefit from the wisdom contained herein you might wish to purchase a copy.
+</p>
+<p>
+    Uncle Bob (as he is affectionately known) kindly gave <a href="https://twitter.com/unclebobmartin/status/1086256734094520320">his permission</a> for this static site to be created as a linkable reference for software engineers.
+</p>
+
+
+
+
+<h1>Comments</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/comments/c1-inappropiate-information.html">C1: Inappropriate Information</a>
+    </h2>
+    <p>It is inappropriate for a comment to hold information better held in a different kind of system such as your source code control system, your issue tracking system, or any other record-keeping system. Change histories, for example, just clutter up source files with volumes of historical and uninteresting text. In general, meta-data such as authors, last-modified-date, SPR number, and so on should not appear in comments. Comments should be reserved for technical notes about the code and design.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/comments/c2-obsolete-comment.html">C2: Obsolete Comment</a>
+    </h2>
+    <p>A comment that has gotten old, irrelevant, and incorrect is obsolete. Comments get old quickly. It is best not to write a comment that will become obsolete. If you find an obsolete comment, it is best to update it or get rid of it as quickly as possible. Obsolete comments tend to migrate away from the code they once described. They become floating islands of irrelevance or misdirection.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/comments/c3-redundant-comment.html">C3: Redundant Comment</a>
+    </h2>
+    <p>A comment is redundant if it describes something that adequately describes itself. For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span><span class="o">++;</span> <span class="c1">// increment</span>
+</code></pre></div></div>
+
+<p>Another example is a Javadoc that says nothing more than (or even less than) the function signature:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * @param sellRequest
+ * @return
+ * @throws ManagedComponentException
+ */</span>
+<span class="kd">public</span> <span class="nc">SellResponse</span> <span class="nf">beginSellItem</span><span class="o">(</span><span class="nc">SellRequest</span> <span class="n">sellRequest</span><span class="o">)</span>
+  <span class="kd">throws</span> <span class="nc">ManagedComponentException</span>
+</code></pre></div></div>
+
+<p>Comments should say things that the code cannot say for itself.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/comments/c4-poorly-written-comment.html">C4: Poorly Written Comment</a>
+    </h2>
+    <p>A comment worth writing is worth writing well.
+If you are going to write a comment, take the time to make sure it is the best comment you can write.
+Choose your words carefully. Use correct grammar and punctuation. Don’t ramble.
+Don’t state the obvious. Be brief.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/comments/c5-commented-out-code.html">C5: Commented-Out Code</a>
+    </h2>
+    <p>It makes me crazy to see stretches of code that are commented out.
+Who knows how old it is? Who knows whether or not it’s meaningful?
+Yet no one will delete it because everyone assumes someone else needs it or has plans for it.</p>
+
+<p>That code sits there and rots, getting less and less relevant with every passing day.
+It calls functions that no longer exist. It uses variables whose names have changed.
+It follows conventions that are obsolete.
+It pollutes the modules that contain it and distracts the people who try to read it.
+Commented-out code is an abomination.</p>
+
+</div>
+
+
+
+
+<h1>Environment</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/environment/e2-tests-require-more-than-one-step.html">E2: Tests Require More Than One Step</a>
+    </h2>
+    <p>You should be able to run <em>all</em> the unit tests with just one command.
+In the best case you can run all the tests by clicking one button in your IDE.
+In the worst case you should be able to issue a single simple command in a shell.
+Being able to run all the tests is so fundamental and so important that it should be quick, easy, and obvious to do.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/environment/e1-build-requires-more-than-one-step.html">E1: Build Requires More Than One Step</a>
+    </h2>
+    <p>Building a project should be a single trivial operation. You should not have to check many little pieces out from source code control. You should not need a sequence of arcane commands or context dependent scripts in order to build the individual elements. You should not have to search near and far for all the various little extra JARs, XML files, and other artifacts that the system requires. You <em>should</em> be able to check out the system with one simple command and then issue one other simple command to build it.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>svn get mySystem
+cd mySystem
+ant all
+</code></pre></div></div>
+
+</div>
+
+
+
+
+<h1>Functions</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/functions/f1-too-many-arguments.html">F1: Too Many Arguments</a>
+    </h2>
+    <p>Functions should have a small number of arguments.
+No argument is best, followed by one, two, and three.
+More than three is very questionable and should be avoided with prejudice.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/functions/f2-output-arguments.html">F2: Output Arguments</a>
+    </h2>
+    <p>Output arguments are counterintuitive.
+Readers expect arguments to be inputs, not outputs.
+If your function must change the state of something, have it change the state of the object it is called on.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/functions/f3-flag-arguments.html">F3: Flag Arguments</a>
+    </h2>
+    <p>Boolean arguments loudly declare that the function does more than one thing.
+They are confusing and should be eliminated.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/functions/f4-dead-function.html">F4: Dead Function</a>
+    </h2>
+    <p>Methods that are never called should be discarded.
+Keeping dead code around is wasteful.
+Don’t be afraid to delete the function.
+Remember, your source code control system still remembers it.</p>
+
+</div>
+
+
+
+
+<h1>General</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g1-multiple-languages-in-one-source-file.html">G1: Multiple Languages in One Source File</a>
+    </h2>
+    <p>Today’s modern programming environments make it possible to put many different languages into a single source file.
+For example, a Java source file might contains snippets of XML, HTML, YAML, JavaDoc, English, JavaScript, and so on.
+For another example, in addition to HTML a JSP file might contain Java, a tag library syntax, English comments, Javadocs, XML, JavaScript, and so forth.
+This is confusing at best and carelessly sloppy at worst.</p>
+
+<p>The ideal is for a source file to contain one, and only one, language.
+Realistically, we will probably have to use more than one.
+But we should take pains to minimize both the number and extent of extra languages in our source files.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g2-obvious-behavior-is-unimplemented.html">G2: Obvious Behavior Is Unimplemented</a>
+    </h2>
+    <p>Following “<a href="https://en.wikipedia.org/wiki/Principle_of_least_astonishment">The Principle of Least Surprise</a>”, any function of class should implement the behaviors that another programmer could reasonably expect. For example, consider a function that translates the name of a day to an <code class="language-plaintext highlighter-rouge">enum</code> that represents the day.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">Day</span> <span class="n">day</span> <span class="o">=</span> <span class="nc">DayDate</span><span class="o">.</span><span class="na">StringToDay</span><span class="o">(</span><span class="nc">String</span> <span class="n">dayName</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>We would expect the string “Monday” to be translated to Day.MONDAY. We would also expect the common abbreviations to be translated, and we would expect the function to ignore case.</p>
+
+<p>When an obvious behavior is not implemented, readers and users of the code can no longer depend on their intuition about function names. They lose their trust in the original author and must fall back on reading the details of the code.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g3-incorrect-behaviour-at-the-boundaries.html">G3: Incorrect Behavior at the Boundaries</a>
+    </h2>
+    <p>It seems obvious to say that code should behave correctly.
+The problem is that we seldom realize just how complicated correct behavior is.
+Developers often write functions that they think will work, and then trust their intuition rather than going to the effort to prove that their works in all the corner and boundary cases.</p>
+
+<p>There is no replacement for due diligence.
+Every boundary condition, every corner case, every quirk and exception represents something that can confound an elegant and intuitive algorithm.
+<em>Don’t rely on your intuition.</em>
+Look for every boundary condition and write a test for it.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g4-overridden-safeties.html">G4: Overridden Safeties</a>
+    </h2>
+    <p>Chernobyl melted down because the plan manager overrode each of the safety mechanisms one by one.
+The safeties were making it inconvenient to run an experiment.
+The result was that the experiment did not get run, and the world saw it’s first major civilian nuclear catastrophe.</p>
+
+<p>It is risky to override safeties. Exerting manual control over <code class="language-plaintext highlighter-rouge">serialVersionUID</code> may be necessary, but it is always risky.
+Turning off certain compiler warnings (or all warnings!) may help you get the build to succeed, but at the risk of endless debugging sessions.
+Turning off failing tests and telling yourself you’ll get them to pass later is as bad as pretending your credit cards are free money.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g5-duplication.html">G5: Duplication</a>
+    </h2>
+    <p>This is one of the most important rules in this book, and you should take it very seriously.
+Virtually every author who writes about software design mentions this rule.
+Dave Thomas and Andy Hunt called it the DRY<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> principle (Don’t Repeat Yourself).
+Kent Beck made it one of the core principles of Extreme Programming and call it: “Once, and only once.”
+Ron Jeffries ranks this rule second, just below getting all the tests to pass.</p>
+
+<p>Every time you see duplication in the code, it represents a missed opportunity for abstraction.
+That duplication could probably become a subroutine or perhaps another class outright.
+By folding the duplication into such an abstraction, you increase the vocabulary of the language of your design.
+Other programmers can use the abstract facilities you create. Coding becomes faster and less error prone because you have raised the abstraction level.</p>
+
+<p>The most obvious form of duplication is when you have clumps of identical code that look like some programmers went wild with the mouse, pasting the same code over and over again.
+These should be replaced with simple methods.</p>
+
+<p>A more subtle form is the <code class="language-plaintext highlighter-rouge">switch/case</code> or <code class="language-plaintext highlighter-rouge">if/else</code> chain that appears again and again in various modules, always testing for the same set of conditions. These should be replaced with polymorphism.</p>
+
+<p>Still more subtle are the modules that have similar algorithms, but that don’t share similar lines of code.
+This is still duplication and should be addressed by using the <em>Template Method</em><sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup> or <em>Strategy</em> pattern<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup>.</p>
+
+<p>Indeed, most of the design patterns that have appeared in the last fifteen years are simply well-known ways to eliminate duplication.
+So too the Codd Normal Forms are a strategy for eliminating duplication.
+Not surprisingly, so is structured programming.</p>
+
+<p>I think the point has been made. Find and eliminate duplication wherever you can.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>[PRAG] <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>[GOF] <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>[GOF] <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g6-code-at-wrong-level-of-abstraction.html">G6: Code at Wrong Level of Abstraction</a>
+    </h2>
+    <p>It is important to create abstractions that separate higher level general concepts from lower level detailed concepts.
+Sometimes we do this by creating abstract classes to hold the higher level concepts and derivatives to hold the lower level concepts,
+When we do this, we need to make sure that the separation is complete.
+We want <em>all</em> the lower level concepts to be in the derivatives and <em>all</em> the higher level concepts to be in the base class.</p>
+
+<p>For example, constants, variables, or utility functions that pertain only to the detailed implementation should not be present in the base class.</p>
+
+<p>This rule also pertains to source files, components, and modules.
+Good software design requires that we separate concepts at different levels and place them in different containers.
+Sometimes these containers are base classes or derivatives and sometimes they are source files, modules, or components.
+Whatever the case may be, the separation needs to be complete.
+We don’t want lower and higher level concepts mixed together.</p>
+
+<p>Consider the following code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Stack</span> <span class="o">{</span>
+  <span class="nc">Object</span> <span class="nf">pop</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">EmptyException</span><span class="o">;</span>
+  <span class="kt">void</span> <span class="nf">push</span><span class="o">(</span><span class="nc">Object</span> <span class="n">o</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">FullException</span><span class="o">;</span>
+  <span class="kt">double</span> <span class="nf">percentFull</span><span class="o">();</span>
+  <span class="kd">class</span> <span class="nc">EmptyException</span> <span class="kd">extends</span> <span class="nc">Exception</span> <span class="o">{}</span>
+  <span class="kd">class</span> <span class="nc">FullException</span> <span class="kd">extends</span> <span class="nc">Exception</span> <span class="o">{}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">percentFull</code> function is at the wrong level of abstractions.
+Although there are many implementations of <code class="language-plaintext highlighter-rouge">Stack</code> where the concept of <em>fullness</em> is reasonable, there are other implementations hat simply <em>could not know</em> how full they are.
+So the function would be better placed in a derivative interface such as <code class="language-plaintext highlighter-rouge">BoundedStack</code>.</p>
+
+<p>Perhaps you are thinking that the implementation could just return zero if the stack were boundless.
+The problem with that is that no stack is truly boundless.
+You cannot really prevent an <code class="language-plaintext highlighter-rouge">OutOfMemoryException</code> by checking for</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">stack</span><span class="o">.</span><span class="na">percentFull</span> <span class="o">()</span> <span class="o">&lt;</span> <span class="mf">50.0</span>
+</code></pre></div></div>
+
+<p>Implementing the function to return 0 would be telling a lie.</p>
+
+<p>The point is that you cannot lie or fake your way out of misplaced abstraction.
+Isolating abstractions is one of the hardest things that software developers do, and there is no quick fix when you get it wrong.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g7-base-classes-depending-on-their-derivatives.html">G7: Base Classes Depending on Their Derivatives</a>
+    </h2>
+    <p>The most common reason for partitioning concepts into base and derivative classes is so that the higher level base class concepts can be independent of the lower level derivative class concepts.
+Therefore, when we see base classes mentioning the names of their derivatives, we suspect a problem.
+In general, base classes should know nothing about their derivatives.</p>
+
+<p>There are exceptions to this rule, of course.
+Sometimes the number of derivatives is strictly fixed, and the base class has code that selects between the derivatives.
+We see this a lot in finite state machine implementations.
+However, in that case the derivatives and base class are strongly coupled and always deploy together in the same jar file.
+In the general case we want to be able to deploy derivatives and bases in different jar files.</p>
+
+<p>Deploying derivatives and bases in different jar files and making sure the base jar files know nothing about the contents of the derivative jar files allows us to deploy our systems in discrete and independent components.
+When such components are modified, they can be redeployed without having to redeploy the base components.
+This means that the impact of change is greatly lessened, and maintaining systems in the field is made much simpler.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g8-too-much-information.html">G8: Too Much Information</a>
+    </h2>
+    <p>Well-defined modules have very small interfaces that allow you to do a lot with a little.
+Poorly defined modules have wide and deep interfaces that force you to use many different gestures to get simple things done.
+A well-defined interface does not offer very many functions to depend upon, so coupling is low.
+A poorly defined interface provides lots of functions that you must call, so coupling is high.</p>
+
+<p>Good software developers learn to limit what they expose at the interfaces of their classes and modules.
+The fewer methods a class has, the better,
+The fewer variables a function knows about, the better.
+The fewer instance variables a class has, the better.</p>
+
+<p>Hide your data.
+Hide your utility functions.
+Hide your constants and your temporaries.
+Don’t create classes with lots of methods or lots of instance variables.
+Don’t create lots of protected variables and functions for your subclasses.
+Concentrate on keeping interfaces very tight and small.
+Help keep coupling low by limiting information.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g9-dead-code.html">G9: Dead Code</a>
+    </h2>
+    <p>Dead code is code that isn’t executed. You find it in the body of an <code class="language-plaintext highlighter-rouge">if</code> statement that checks for a condition that can’t happen.
+You find it in the <code class="language-plaintext highlighter-rouge">catch</code> block of a <code class="language-plaintext highlighter-rouge">try</code> that never <code class="language-plaintext highlighter-rouge">throws</code>.
+You find it in little utility methods that are never called or <code class="language-plaintext highlighter-rouge">switch/case</code> conditions that never occur.</p>
+
+<p>The problem with dead code is that after awhile it starts to smell.
+The older it is, the stronger and sourer the odor becomes.
+This is because dead code is not completely updated when designs change.
+It still <em>compiles</em>, but it does not follow newer conventions or rules.
+It was written at a time when the system was <em>different</em>.
+When you find dead code, do the right thing.
+Give it a decent burial.
+Delete it from the system.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g10-vertical-separation.html">G10: Vertical Separation</a>
+    </h2>
+    <p>Variables and function should be defined close to where they are used.
+Local variables should be declared just above their first usage and should have a small vertical scope.
+We don’t want local variables declared hundreds of lines distant from their usages.</p>
+
+<p>Private functions should be defined just below their first usage.
+Private functions belong to the scope of the whole class, but we’d still like to limit the vertical distance between the invocations and definitions.
+Finding a private function should just be a matter of scanning downward from the first usage.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g11-inconsistency.html">G11: Inconsistency</a>
+    </h2>
+    <p>If you do something a certain way, do all similar things in the same way.
+This goes back to the principle of least surprise.
+Be careful with the conventions you choose, and once chosen, be careful to continue to follow them.</p>
+
+<p>If within a particular function you use a variable names <code class="language-plaintext highlighter-rouge">response</code> to hold an <code class="language-plaintext highlighter-rouge">HttpServletResponse</code>, then use the same variable name consistently in the other functions that use <code class="language-plaintext highlighter-rouge">HttpServletResponse</code> objects.
+If you name a method <code class="language-plaintext highlighter-rouge">processVerificationRequest</code>, then use a similar name, such as <code class="language-plaintext highlighter-rouge">processDeletionRequest</code>, for the methods that process other kinds of requests.</p>
+
+<p>Simple consistency like this, when reliably applied, can make code much easier to read and modify.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g12-clutter.html">G12: Clutter</a>
+    </h2>
+    <p>Of what use is a default constructor with no implementation?
+All it serves to do is clutter up the code with meaningless artifacts. Variables that aren’t used, functions that are never called, comments that add no information, and so forth.
+All these things are clutter and should be removed.
+Keep your source files clean, well organized, and free of clutter.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g13-artificial-coupling.html">G13: Artificial Coupling</a>
+    </h2>
+    <p>Things that don’t depend upon each other should not be artificially coupled.
+For example, general <code class="language-plaintext highlighter-rouge">enums</code> should not be contained within more specific classes because this forces the whole application to know about these more specific classes.
+The same goes for general purpose <code class="language-plaintext highlighter-rouge">static</code> functions being declared in specific classes.</p>
+
+<p>In general an artificial coupling is a coupling between two modules that serves no direct purpose.
+It is a result of putting a variable, constant, or function in a temporarily convenient, though inappropriate, location.
+This is lazy and careless.</p>
+
+<p>Take the time to figure out where functions, constants, and variables ought to be declared.
+Don’t just toss them in the most convenient place at hand and then leave them there.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g14-feature-envy.html">G14: Feature Envy</a>
+    </h2>
+    <p>This is one of Martin Fowler’s code smells<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">1</a></sup>. The methods of a class should be interested in the variables and functions of the class they belong to, and not the variables and functions of other classes.
+When a method uses accessors and mutators of some other object to manipulate the data within that object, then it <em>envies</em> the scope of the class of that other object.
+It wishes that it were inside that other class so that it could have direct access to the variables it is manipulating.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyPayCalculator</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateWeeklyPay</span><span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">tenthRate</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthRate</span><span class="o">().</span><span class="na">getPennies</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">tenthsWorked</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="mi">400</span><span class="o">,</span> <span class="n">tenthsWorked</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">straightPay</span> <span class="o">=</span> <span class="n">straightTime</span> <span class="o">*</span> <span class="n">tenthRate</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">overtimePay</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">overTime</span><span class="o">*</span><span class="n">tenthRate</span><span class="o">*</span><span class="mf">1.5</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Money</span><span class="o">(</span><span class="n">straightPay</span> <span class="o">+</span> <span class="n">overtimePay</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">calculateWeeklyPay</code> method reaches into the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> object to get the data on which it operates.
+The <code class="language-plaintext highlighter-rouge">calculateWeeklyPay</code> method <em>envies</em> the scope of the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code>.
+It “wishes” that it could be inside <code class="language-plaintext highlighter-rouge">HourlyEmployee</code>.</p>
+
+<p>All else being equal, we want to eliminate Feature Envy because it exposes the internals of one class to another.
+Sometimes, however, Feature Envy is a necessary evil.
+Consider the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyEmployeeReport</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">HourlyEmployee</span> <span class="n">employee</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">HourlyEmployeeReport</span><span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">employee</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nc">String</span> <span class="nf">reportHours</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span>
+      <span class="s">"Name: %s\tHours:%d.%1d\n"</span><span class="o">,</span>
+      <span class="n">employee</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span>
+      <span class="n">employee</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()/</span><span class="mi">10</span><span class="o">,</span>
+      <span class="n">employee</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()%</span><span class="mi">10</span><span class="o">);</span>
+    <span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Clearly, the <code class="language-plaintext highlighter-rouge">reportHours</code> method envies the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> class. On the other hand, we don’t want <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> to have to know about the format of the report.
+Moving that format string into the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> class would violate several principles of object oriented design<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">2</a></sup>.
+It would couple <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> to the format of the report, exposing it to changes in that format.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:6" role="doc-endnote">
+      <p>[Refactoring]. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>Specifically, the Single Responsibility Principle, the Open Closed Principle, and the Common Closure Principle. See [PPP]. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g15-selector-arguments.html">G15: Selector Arguments</a>
+    </h2>
+    <p>There is hardly anything more abominable than a dangling false argument at the end of a function call.
+What does it mean?
+What would it change if it were <code class="language-plaintext highlighter-rouge">true</code>?
+Not only is the purpose of a selector argument difficult to remember, each selector argument combines many functions into one.
+Selector arguments are just a lazy way to avoid splitting a large function into several smaller functions.
+Consider:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">calculateWeeklyPay</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">overtime</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">tenthRate</span> <span class="o">=</span> <span class="n">getTenthRate</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="n">tenthsWorked</span> <span class="o">=</span> <span class="n">getTenthsWorked</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="mi">400</span><span class="o">,</span> <span class="n">tenthsWorked</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">straightPay</span> <span class="o">=</span> <span class="n">straightTime</span> <span class="o">*</span> <span class="n">tenthRate</span><span class="o">;</span>
+  <span class="kt">double</span> <span class="n">overtimeRate</span> <span class="o">=</span> <span class="n">overtime</span> <span class="o">?</span> <span class="mf">1.5</span> <span class="o">:</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">tenthRate</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">overtimePay</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">overTime</span> <span class="o">*</span> <span class="n">overtimeRate</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">straightPay</span> <span class="o">+</span> <span class="n">overtimePay</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You call this function with a <code class="language-plaintext highlighter-rouge">true</code> if overtime is paid as time and a half, and with a <code class="language-plaintext highlighter-rouge">false</code> if overtime is paid as straight time.
+It’s bad enough that you must remember what <code class="language-plaintext highlighter-rouge">calculateWeeklyPay(false)</code> means whenever you happen to stumble across it.
+But the real shame of a function like this is that the author missed the opportunity to write the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">straightPay</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nf">getTenthsWorked</span><span class="o">()</span> <span class="o">*</span> <span class="n">getTenthRate</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">overTimePay</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">overTimeTenths</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">getTenthsWorked</span><span class="o">()</span> <span class="o">-</span> <span class="mi">400</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">overTimePay</span> <span class="o">=</span> <span class="n">overTimeBonus</span><span class="o">(</span><span class="n">overTimeTenths</span><span class="o">);</span>
+  <span class="k">return</span> <span class="nf">straightPay</span><span class="o">()</span> <span class="o">+</span> <span class="n">overTimePay</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">int</span> <span class="nf">overTimeBonus</span><span class="o">(</span><span class="kt">int</span> <span class="n">overTimeTenths</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">double</span> <span class="n">bonus</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">getTenthRate</span><span class="o">()</span> <span class="o">*</span> <span class="n">overTimeTenths</span><span class="o">;</span>
+  <span class="k">return</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">bonus</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Of course, selectors needs not be <code class="language-plaintext highlighter-rouge">boolean</code>.
+They can be enums, integers, or any other type of argument that is used to select the behavior of the function.
+In general it is better to have many functions than to pass some code into a function to select the behavior.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g16-obscured-intent.html">G16: Obscured Intent</a>
+    </h2>
+    <p>We want code to be as expressive as possible. Run-on expressions, Hungarian notation, and magic numbers all obscure the author’s intent. For example, here is the <code class="language-plaintext highlighter-rouge">overTimePay</code> function as it might have appeared:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">m_otCalc</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">iThsWkd</span> <span class="o">*</span> <span class="n">iThsRte</span> <span class="o">+</span>
+    <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">iThsRte</span> <span class="o">*</span> 
+      <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">iThsWkd</span> <span class="o">-</span> <span class="mi">400</span><span class="o">)</span>
+    <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Small and dense as this might appear, it’s also virtually impenetrable.
+It is worth taking the time to make the intent of our code visible to our readers.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g17-misplaced-responsibility.html">G17: Misplaced Responsibility</a>
+    </h2>
+    <p>One of the most important decisions a software developer can make is where to put code.
+For example, where should the <code class="language-plaintext highlighter-rouge">PI</code> constant go?
+Should it be in the <code class="language-plaintext highlighter-rouge">Math</code> class?
+Perhaps it belongs in the <code class="language-plaintext highlighter-rouge">Trigonometry</code> class?
+Or maybe in the <code class="language-plaintext highlighter-rouge">Circle</code> class?</p>
+
+<p>The principle of least surprise comes into play here.
+Code should be placed where a reader would naturally expect it to be.
+The <code class="language-plaintext highlighter-rouge">PI</code> constant should go where the trig functions are declared.
+The <code class="language-plaintext highlighter-rouge">OVERTIME_RATE</code> constant should be declared in the <code class="language-plaintext highlighter-rouge">HourlyPayCalculator</code> class.</p>
+
+<p>Sometimes we get “clever” about where to put certain functionality.
+We’ll put it in a function that’s convenient for us, but not necessarily intuitive to the reader.
+For example, perhaps we need to print a report with the total of hours that an employee worked.
+We could sum up those hours in the code that prints the report, or we could try to keep a running total in the code that accepts time cards.</p>
+
+<p>One way to make this decision is to look at the names of the functions.
+Let’s say that our report module has a function named <code class="language-plaintext highlighter-rouge">getTotalHours</code>.
+Let’s also say that the module that accepts time cards has a <code class="language-plaintext highlighter-rouge">saveTimeCard</code> function.
+Which of these functions, by it’s name, implies that it calculates the total?
+The answer should be obvious.</p>
+
+<p>Clearly, there are sometimes performance reasons why the total should be calculated as time cards are accepted rather than when the report is printed.
+That’s fine, but the names of the functions ought to reflect this.
+For example, there should be a <code class="language-plaintext highlighter-rouge">computeRunningTotalOfHour</code> function in the timecard module.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g18-inappropriate-state.html">G18: Inappropriate State</a>
+    </h2>
+    <p><code class="language-plaintext highlighter-rouge">Math.max(double a, double b)</code> is a good static method.
+It does not operate on a single instance; indeed it would be silly to have to say <code class="language-plaintext highlighter-rouge">new Math().max(a, b)</code> or even <code class="language-plaintext highlighter-rouge">a.max(b)</code>.
+All the data that <code class="language-plaintext highlighter-rouge">max</code> uses comes from its two arguments, and not from any “owning” object.
+More to the point, there is almost <em>no chance</em> that we’d want <code class="language-plaintext highlighter-rouge">Math.max</code> to be polymorphic.</p>
+
+<p>Sometimes, however, we write static functions that should not be static.
+For example, consider:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">HourlyPayCalculator</span><span class="o">.</span><span class="na">calculatePay</span><span class="o">(</span><span class="n">employee</span><span class="o">,</span> <span class="n">overtimeRate</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Again, this seems like a reasonable <code class="language-plaintext highlighter-rouge">static</code> function.
+It doesn’t operate on any particular object and gets all it’s data from it’s arguments.
+However, there is a reasonable chance that we’ll want this function to be polymorphic.
+We may wish to implement several different algorithms for calculating hourly pay.
+For example, <code class="language-plaintext highlighter-rouge">OvertimeHourlyPayCalculator</code> and <code class="language-plaintext highlighter-rouge">StraightTimeHourlyPayCalculator</code>.
+So in this case the function should not be static.
+It should be a nonstatic member function of <code class="language-plaintext highlighter-rouge">Employee</code>.</p>
+
+<p>In general you should prefer nonstatic methods to static methods.
+When in doubt, make the function nonstatic.
+If you really want a function to be static, make sure that there is no chance that you’ll want it to behave polymorphically.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g19-use-explanatory-variables.html">G19: Use Explanatory Variables</a>
+    </h2>
+    <p>Kent Beck wrote about this in his great book <em>Smalltalk Best Practice Patterns</em><sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">1</a></sup> and again more recently in his equally great book <em>Implementation Patterns</em><sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">2</a></sup>.
+One of the more powerful ways to make a program readable is to break the calculations up into intermediate values that are held in variables with meaningful names.
+Consider the following example from FitNesse:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">Matcher</span> <span class="n">match</span> <span class="o">=</span> <span class="n">headerPattern</span><span class="o">.</span><span class="na">matcher</span><span class="o">(</span><span class="n">line</span><span class="o">);</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">match</span><span class="o">.</span><span class="na">find</span><span class="o">())</span> <span class="o">{</span>
+    <span class="nc">String</span> <span class="n">key</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+    <span class="nc">String</span> <span class="n">value</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="na">group</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+    <span class="n">headers</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">key</span><span class="o">.</span><span class="na">toLowerCase</span><span class="o">(),</span> <span class="n">value</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The simple use of explanatory variables makes it clear that the first matched group is the <em>key</em>, and the second matched group is the <em>value</em>.</p>
+
+<p>It is hard to overdo this.
+More explanatory variables are generally better than fewer.
+It is remarkable how an opaque module can suddenly become transparent simply by breaking the calculations up into well-named intermediate values.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:8" role="doc-endnote">
+      <p>[Beck97], p. 108. <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p>[Beck07]. <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g20-function-names-should-say-what-they-do.html">G20: Function Names Should Say What They Do</a>
+    </h2>
+    <p>Look at this code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nc">Date</span> <span class="n">newDate</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Would you expect this to add five days to the date?
+Or is it weeks, or hours?
+Is the <code class="language-plaintext highlighter-rouge">date</code> instance changed or does the function just return a new <code class="language-plaintext highlighter-rouge">Date</code> without changing the old one?
+<em>You can’t tell from the call what the function does.</em></p>
+
+<p>If the function adds five days to the date and changes the date, then it should be called <code class="language-plaintext highlighter-rouge">addDaysTo</code> or <code class="language-plaintext highlighter-rouge">increaseByDays</code>.
+If, on the other hand, the function returns a new date that is five days later but does not change the date instance, it should be called <code class="language-plaintext highlighter-rouge">daysLater</code> or <code class="language-plaintext highlighter-rouge">daysSince</code>.</p>
+
+<p>If you have to look at the implementation (or documentation) of the function to know what it does, then you should work to find a better name or rearrange the functionality so that it can be placed in functions with better names.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g21-understand-the-algorithm.html">G21: Understand the Algorithm</a>
+    </h2>
+    <p>Lots of very funny code is written because people don’t take the time to understand the algorithm.
+They get something to work by plugging in enough <code class="language-plaintext highlighter-rouge">if</code> statements and flags, without really stopping to consider what is really going on.</p>
+
+<p>Programming is often an exploration. You <em>think</em> you know the right algorithm for something, but then you wind up fiddling with it, prodding and poking at it, until you get it to “work”.
+How do you know it “works”?
+Because it passes the test cases you can think of.</p>
+
+<p>There is nothing wrong with this approach. Indeed, often it is the only way to get a function to do what you think it should.
+However, it is not sufficient to leave the quotation marks around the work “work”.</p>
+
+<p>Before you consider yourself to be done with a function, make sure you <em>understand</em> how it works.
+It is not good enough that it passes all the tests.
+You must <em>know</em><sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">1</a></sup> that the solution is correct.</p>
+
+<p>Often the best way to gain this knowledge and understanding is to refactor the function into something that is so clean and expressive that it is <em>obvious</em> how it works.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:10" role="doc-endnote">
+      <p>There is a difference between knowing how the code works and knowing whether the algorithm will do the job required of it. Being unsure that an algorithm is appropriate is often a fact of life. Being unsure what your code does is just laziness. <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g22-make-logical-dependencies-physical.html">G22: Make Logical Dependencies Physical</a>
+    </h2>
+    <p>If one module depends upon another, that dependency should be physical, not just logical.
+The dependent module should not make assumptions (in other words, logical dependencies) about the module it depends upon.
+Rather it should ask that module for all the information it depends upon.</p>
+
+<p>For example, imagine that you are writing a function that prints a plain text report of hours worked by employees.
+One class named <code class="language-plaintext highlighter-rouge">HourlyReporter</code> gathers all the data into a convenient form and then passes it to <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> to print it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyReporter</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">HourlyReportFormatter</span> <span class="n">formatter</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">LineItem</span><span class="o">&gt;</span> <span class="n">page</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">PAGE_SIZE</span> <span class="o">=</span> <span class="mi">55</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">HourlyReporter</span><span class="o">(</span><span class="nc">HourlyReportFormatter</span> <span class="n">formatter</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">formatter</span> <span class="o">=</span> <span class="n">formatter</span><span class="o">;</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ArrayList</span><span class="o">&lt;</span><span class="nc">LineItem</span><span class="o">&gt;();</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">generateReporter</span><span class="o">(</span><span class="nc">List</span><span class="o">&lt;</span><span class="nc">HourlyEmployee</span><span class="o">&gt;</span> <span class="n">employees</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span> <span class="o">:</span> <span class="n">employees</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">addLineItemToPage</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">page</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="no">PAGE_SIZE</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">printAndClearItemList</span><span class="o">();</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">page</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">printAndClearItemList</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">printAndClearItemList</span><span class="o">()</span> <span class="o">{</span>
+    <span class="n">formatter</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">page</span><span class="o">);</span>
+    <span class="n">page</span><span class="o">.</span><span class="na">clear</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">addLineItemToPage</span><span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">LineItem</span> <span class="n">item</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LineItem</span><span class="o">();</span>
+    <span class="n">item</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getName</span><span class="o">();</span>
+    <span class="n">item</span><span class="o">.</span><span class="na">hours</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()</span> <span class="o">/</span> <span class="mi">10</span><span class="o">;</span>
+    <span class="n">item</span><span class="o">.</span><span class="na">tenths</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()</span> <span class="o">%</span> <span class="mi">10</span><span class="o">;</span>
+    <span class="n">page</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">class</span> <span class="nc">LineItem</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">hours</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="n">tenths</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>This code has a logical dependency that has not been physicalized.
+Can you spot it?
+It is the constant <code class="language-plaintext highlighter-rouge">PAGE_SIZE</code>.
+Why should the <code class="language-plaintext highlighter-rouge">HourlyReporter</code> know the size of the page?
+Page size should be the responsibility of the <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code>.</p>
+
+<p>The fact that PAGE_SIZE is declared in <code class="language-plaintext highlighter-rouge">HourlyReporter</code> represents a misplaced responsibility <a href="/general/g17-misplaced-responsibility.html">[G17]</a> that causes <code class="language-plaintext highlighter-rouge">HourlyReporter</code> to assume that it knows what the page size ought to be.
+Such an assumption is a logical dependency.
+<code class="language-plaintext highlighter-rouge">HourlyReporter</code> depends on the face that <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> can deal with page sizes of 55.
+If some implementation of <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> could not deal with such sizes, then there would be an error.</p>
+
+<p>We can physicalize this dependency by creating a new method in <code class="language-plaintext highlighter-rouge">HourlyReportFormatter</code> name <code class="language-plaintext highlighter-rouge">getMaxPageSize()</code>. <code class="language-plaintext highlighter-rouge">HourlyReporter</code> will then call that function rather than using the <code class="language-plaintext highlighter-rouge">PAGE_SIZE</code> constant.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g23-prefer-polymorphism-to-if-else-or-switch-case.html">G23: Prefer Polymorphism to If/Else or Switch/Case</a>
+    </h2>
+    <p>This might seem a strange suggestion given the topic of Chapter 6.
+After all, in that chapter I make the point that switch statements are probably appropriate in the parts of the system where adding new functions is more likely than adding new types.</p>
+
+<p>First, most people use switch statements because it’s the obvious brute force solution, not because it’s the right solution for the situation.
+So this heuristic is here to remind us to consider polymorphism before using a switch.</p>
+
+<p>Second, the cases where functions are more volatile than types are relatively rare.
+So <em>every</em> switch statement should be suspect.</p>
+
+<p>I use the following “ONE SWITCH” rule: <em>There may be no more than one switch statement for a given type of selection.</em>
+<em>The cases in that switch statement must create polymorphic objects that take the place of other switch statements in the rest of the system.</em></p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g24-follow-standard-conventions.html">G24: Follow Standard Conventions</a>
+    </h2>
+    <p>Every team should follow a coding standard based on common industry norms.
+This coding standard should specify things like where to declare instance variables; how to name classes, methods, and variables; where to put braces; and so on.
+The team should not need a document to describe these conventions because their code provides examples.</p>
+
+<p>Everyone on the team should follow these conventions.
+This means that each team member must be mature enough to realize that it doesn’t matter a white where you put your braces so long as you all agree on where to put them.</p>
+
+<p>If you would like to know what conventions I follow, you’ll se them in the refactored code in Listing B-7 on page 394, through Listing B-14.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g25-replace-magic-numbers-with-named-constants.html">G25: Replace Magic Numbers with Named Constants</a>
+    </h2>
+    <p>This is probably one of the oldest rules in software development.
+I remember reading it in the late sixties in introductory COBOL, FORTRAN, and PL/I manuals.
+In general it is a bad idea to have raw numbers in your code.
+you should hide them behind well-named constants.</p>
+
+<p>For example, the number 86,400 should be hidden behind the constant <code class="language-plaintext highlighter-rouge">SECONDS_PER_DAY</code>.
+If you are printing 55 lines per page, then the constant 55 should be hidden behind the constant <code class="language-plaintext highlighter-rouge">LINES_PER_PAGE</code>.</p>
+
+<p>Some constants are so easy to recognize that they don’t always need a named constant to hide behind so long as they are used in conjunction with very self-explanatory code.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">double</span> <span class="n">milesWalked</span> <span class="o">=</span> <span class="n">feetWalked</span> <span class="o">/</span> <span class="mf">5280.0</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">dailyPay</span> <span class="o">=</span> <span class="n">hourlyRate</span> <span class="o">*</span> <span class="mi">8</span><span class="o">;</span>
+  <span class="kt">double</span> <span class="n">circumference</span> <span class="o">=</span> <span class="n">radius</span> <span class="o">*</span> <span class="nc">Math</span><span class="o">.</span><span class="na">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>Do we really need the constants <code class="language-plaintext highlighter-rouge">FEET_PER_MILE</code>, <code class="language-plaintext highlighter-rouge">WORK_HOURS_PER_DAY</code>, and <code class="language-plaintext highlighter-rouge">TWO</code> in the above examples?
+Clearly, the last case is absurd.
+There are some formulae in which constants are simply better written as raw numbers.
+You might quibble about the <code class="language-plaintext highlighter-rouge">WORK_HOURS_PER_DAY</code> case because the laws or conventions might change.
+On the other hand, that formula reads so nicely with the 8 in it that I would be reluctant to add 17 extra characters to the readers’ burden.
+And in the <code class="language-plaintext highlighter-rouge">FEET_PER_MILE</code> case, the number 5280 is so very well known and so unique a constant that readers would recognize it even if it stood alone on a page with no context surrounding it.</p>
+
+<p>Constants like 3.141592653589793 are also very well known and easily recognizable.
+However, the chance for error is too great to leave them raw.
+Every time someone sees 3.1415927535890793, they know what it is π, and so they fail to scrutinize it.
+(Did you catch the single-digit error?) We also don’t want people using 3.14, 3.1459, 3.142, and so forth.
+Therefore, it is a good thing that Math.PI has already been defined for us.</p>
+
+<p>The term “Magic Number” does not apply only to numbers.
+It applies to any token that has value that is not self-describing.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">assertEqual</span><span class="o">(</span><span class="mi">7777</span><span class="o">,</span> <span class="nc">Employee</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="s">"John Doe"</span><span class="o">).</span><span class="na">employeeNumber</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p>There are two magic numbers in this assertion.
+The first is obviously 7777, though what it might mean is not obvious.
+The second magic number is <code class="language-plaintext highlighter-rouge">"John Doe,"</code> and again the intent is not clear.</p>
+
+<p>It turns out that <code class="language-plaintext highlighter-rouge">"John Doe"</code> is the name of employee #7777 in a well-known test database created by out team.
+Everyone in the team knows that when you connect to this database, it will have several employees already cooked into it with well-known values and attributes.
+It also turns out that <code class="language-plaintext highlighter-rouge">"John Doe"</code> represents the sole hourly employee in that test database.
+So this test should really read:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">assertEqual</span><span class="o">(</span>
+    <span class="no">HOURLY_EMPLOYEE_ID</span><span class="o">,</span>
+    <span class="nc">Employee</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="no">HOURLY_EMPLOYEE_NAME</span><span class="o">).</span><span class="na">employeeNumber</span><span class="o">());</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g26-be-precise.html">G26: Be Precise</a>
+    </h2>
+    <p>Expecting the first match to be the <em>only</em> match to a query is probably naive.
+Using floating point numbers to represent currency is almost criminal.
+Avoiding locks and/or transaction management because you don’t think concurrent update is likely is lazy at best.
+Declaring a variable to be an <code class="language-plaintext highlighter-rouge">ArrayList</code> when a <code class="language-plaintext highlighter-rouge">List</code> will do is overly constraining.
+Making all variables <code class="language-plaintext highlighter-rouge">protected</code> by default is not constraining enough.</p>
+
+<p>When you make a decision in your code, make sure you make it <em>precisely</em>.
+Know why you have made it and how you will deal with any exceptions.
+Don’t be lazy about the precision of your decisions.
+If you decide to call a function that might return <code class="language-plaintext highlighter-rouge">null</code>, make sure you check for <code class="language-plaintext highlighter-rouge">null</code>.
+If you query for what you think is the only record in the database, make sure your code checks to be sure there aren’t others.
+If you need to deal with currency, use integers<sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">1</a></sup> and deal with rounding appropriately.
+If there is the possibility of concurrent update, make sure you implement some kind of locking mechanism.</p>
+
+<p>Ambiguities and imprecision in code are either a result of disagreements or laziness.
+In either case they should be eliminated.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:11" role="doc-endnote">
+      <p>Or better yet, a <code class="language-plaintext highlighter-rouge">Money</code> class that uses integers. <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g27-structure-over-convention.html">G27: Structure over Convention</a>
+    </h2>
+    <p>Enforce design decisions with structure over convention.
+Naming conventions are good, but they are inferior to structures that force compliance.
+For example, switch/cases with nicely named enumerations are inferior to base classes with abstract methods.
+No one is forced to implement the <code class="language-plaintext highlighter-rouge">switch/case</code> statement the same way each time; but the base classes do enforce that concrete classes have all abstract methods implemented.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g28-encapsulate-conditionals.html">G28: Encapsulate Conditionals</a>
+    </h2>
+    <p>Boolean logic is hard enough to understand without having to see it in the context of an <code class="language-plaintext highlighter-rouge">if</code> or <code class="language-plaintext highlighter-rouge">while</code> statement.
+Extract functions that explain the intent of the conditional.</p>
+
+<p>For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(</span><span class="n">shouldBeDeleted</span><span class="o">(</span><span class="n">timer</span><span class="o">))</span>
+</code></pre></div></div>
+
+<p>is preferable to</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(</span><span class="n">timer</span><span class="o">.</span><span class="na">hasExpired</span><span class="o">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">timer</span><span class="o">.</span><span class="na">isRecurrent</span><span class="o">())</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g29-avoid-negative-conditionals.html">G29: Avoid Negative Conditionals</a>
+    </h2>
+    <p>Negatives are just a bit harder to understand than positives.
+So, when possible, conditionals should be expressed as positives.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">.</span><span class="na">shouldCompact</span><span class="o">())</span>
+</code></pre></div></div>
+
+<p>is preferable to</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(!</span><span class="n">buffer</span><span class="o">.</span><span class="na">shouldNotCompact</span><span class="o">())</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g30-functions-should-do-one-thing.html">G30: Functions Should Do One Thing</a>
+    </h2>
+    <p>It is often tempting to create functions that have multiple sections that perform a series of operations.
+Functions of this kind do more than <em>one thing</em>, and should be converted into many smaller functions, each of which does <em>one thing</em>.</p>
+
+<p>For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">pay</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Employee</span> <span class="n">e</span> <span class="o">:</span> <span class="n">employees</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">isPayDay</span><span class="o">())</span> <span class="o">{</span>
+        <span class="nc">Money</span> <span class="n">pay</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">calculatePay</span><span class="o">();</span>
+        <span class="n">e</span><span class="o">.</span><span class="na">deliverPay</span><span class="o">(</span><span class="n">pay</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This bit of code does three things.
+It loops over all the employees, checks to see whether each employee ought to be paid, and then pays the employee.
+This code would be better written as:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">pay</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="nc">Employee</span> <span class="n">e</span> <span class="o">:</span> <span class="n">employees</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">payIfNecessary</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">payIfNecessary</span><span class="o">(</span><span class="nc">Employee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">e</span><span class="o">.</span><span class="na">isPayDay</span><span class="o">())</span>
+      <span class="n">calculateAndDeliverPay</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">calculateAndDeliverPay</span><span class="o">(</span><span class="nc">Employee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">Money</span> <span class="n">pay</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">calculatePay</span><span class="o">();</span>
+    <span class="n">e</span><span class="o">.</span><span class="na">deliveryPay</span><span class="o">(</span><span class="n">pay</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Each of these functions does one thing. (See “Do One Thing” on page 35 of the book.)</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g31-hidden-temporal-couplings.html">G31: Hidden Temporal Couplings</a>
+    </h2>
+    <p>Temporal couplings are often necessary, but you should not hide the coupling.
+Structure the arguments of your functions such that the order in which they should be called is obvious.
+Consider the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MoogDiver</span> <span class="o">{</span>
+    <span class="nc">Gradient</span> <span class="n">gradient</span><span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Spline</span><span class="o">&gt;</span> <span class="n">splines</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">dive</span><span class="o">(</span><span class="nc">String</span> <span class="n">reason</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">saturateGradient</span><span class="o">();</span>
+      <span class="n">reticulateSplines</span><span class="o">();</span>
+      <span class="n">diveForMoog</span><span class="o">(</span><span class="n">reason</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The order of the three functions is important.
+You must saturate the gradient before you can reticulate the splines, and only then can you dive for the moog.
+Unfortunately, the code does not enforce this temporal coupling.
+Another programmer could call <code class="language-plaintext highlighter-rouge">reticulateSplines</code> before <code class="language-plaintext highlighter-rouge">saturateGradient</code> was called, leading to an <code class="language-plaintext highlighter-rouge">UnsaturatedGradientException</code>.
+A better solutions is:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">MoogDiver</span> <span class="o">{</span>
+    <span class="nc">Gradient</span> <span class="n">gradient</span><span class="o">;</span>
+    <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Spline</span><span class="o">&gt;</span> <span class="n">splines</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">dive</span><span class="o">(</span><span class="nc">String</span> <span class="n">reason</span><span class="o">)</span> <span class="o">{</span>
+      <span class="nc">Gradient</span> <span class="n">gradient</span> <span class="o">=</span> <span class="n">saturateGradient</span><span class="o">();</span>
+      <span class="nc">List</span><span class="o">&lt;</span><span class="nc">Spline</span><span class="o">&gt;</span> <span class="n">splines</span> <span class="o">=</span> <span class="n">reticulateSplines</span><span class="o">(</span><span class="n">gradient</span><span class="o">);</span>
+      <span class="n">diveForMoog</span><span class="o">(</span><span class="n">splines</span><span class="o">,</span> <span class="n">reason</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This exposes the temporal coupling by creating a bucket brigade.
+Each function produces a result that the next function needs, so there is no reasonable way to call them out of order.</p>
+
+<p>You might complain that this increases the complexity of the functions, and you’d be right.
+But that extra syntactic complexity exposes the true temporal complexity of the situation.</p>
+
+<p>Note that I left the instance variables in place. I presume that they are needed by private methods in the class.
+Even so, I want the arguments in place to make the temporal coupling explicit.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g32-dont-be-arbitrary.html">G32: Don't Be Arbitrary</a>
+    </h2>
+    <p>Have a reason for the way you structure your code, and make sure that reason is communicated by the structure of the code.
+If a structure appears consistently throughout the system, others will use it and preserve the convention.
+For example, I was recently merging changes to FitNesse and discovered that one of our committers had done this:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">AliasLinkWidget</span> <span class="kd">extends</span> <span class="nc">ParentWidget</span>
+  <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">VariableExpandingWidgetRoot</span> <span class="o">{</span>
+      <span class="o">...</span>
+
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The problem with this was that <code class="language-plaintext highlighter-rouge">VariableExpandingRootWidget</code> had no need to be inside the scope of <code class="language-plaintext highlighter-rouge">AliasLinkWidget</code>.
+Moreover, other unrelated classes made use of <code class="language-plaintext highlighter-rouge">AliasLinkWidget.VariableExpandingRootWidget</code>.
+These classes had no need to know about <code class="language-plaintext highlighter-rouge">AliasLinkWidget</code>.</p>
+
+<p>Perhaps the programmer had plopped the <code class="language-plaintext highlighter-rouge">VariableExpandingRootWidget</code> into <code class="language-plaintext highlighter-rouge">AliasLinkWidget</code> as a matter of convenience, or perhaps he thought that it really needed to be scoped inside <code class="language-plaintext highlighter-rouge">AliasLinkWidget</code>.
+Whatever the reason, the result wound up being arbitrary.
+Public classes that are not utilities of some other class should not be scoped inside another class.
+The convention is to make them public att the top level of their package.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g33-encapsulate-boundary-conditions.html">G33: Encapsulate Boundary Conditions</a>
+    </h2>
+    <p>Boundary conditions are hard to keep track of.
+Put the processing of them in one place.
+Don’t let them leak all over the code.
+We don’t want swarms of <code class="language-plaintext highlighter-rouge">+1</code>s and <code class="language-plaintext highlighter-rouge">-1</code>s scatter hither and yon.
+Consider this simple example for FIT:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span><span class="o">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">tags</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Parse</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="n">tags</span><span class="o">,</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="o">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">endTag</span><span class="o">);</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Notice that <code class="language-plaintext highlighter-rouge">level + 1</code> appears twice.
+This is a boundary condition that should be encapsulated within a variable named something like <code class="language-plaintext highlighter-rouge">nextLevel</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kt">int</span> <span class="n">nextLevel</span> <span class="o">=</span> <span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+  <span class="k">if</span><span class="o">(</span><span class="n">nextLevel</span> <span class="o">&lt;</span> <span class="n">tags</span><span class="o">.</span><span class="na">length</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Parse</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="n">tags</span><span class="o">,</span> <span class="n">nextLevel</span><span class="o">,</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">endTag</span><span class="o">);</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g34-functions-should-descend-only-one-level-of-abstraction.html">G34: Functions Should Descend Only One Level of Abstraction</a>
+    </h2>
+    <p>The statements within a function should all be written at the same level of abstraction, which should be one level below the operation described by the name of the function.
+This may be the hardest of these heuristics to interpret and follow.
+Though the idea is plain enough, humans are just far too good at seamlessly mixing levels of abstraction.
+Consider, for example, the following code taken from FitNesse:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">render</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+    <span class="nc">StringBuffer</span> <span class="n">html</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StringBuffer</span><span class="o">(</span><span class="s">"&lt;hr"</span><span class="o">);</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">html</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">" size=\""</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="n">size</span> <span class="o">+</span> <span class="mi">1</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">"\""</span><span class="o">);</span>
+    <span class="n">html</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">"&gt;"</span><span class="o">);</span>
+
+    <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="na">toString</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>A moment’s study and you can see what’s going on.
+This function constructs the HTML tag that draws a horizontal rule across the page.
+The height of that rule is specified in the <code class="language-plaintext highlighter-rouge">size</code> variable.</p>
+
+<p>Now look again.
+This method is mixing at least two levels of abstraction.
+The first is the notion that a horizontal rule has a size.
+The second is the syntax of the <code class="language-plaintext highlighter-rouge">HR</code> tag itself.
+This code comes from the <code class="language-plaintext highlighter-rouge">HruleWidget</code> module in FitNesse.
+This module detects a row of four or more dashes and converts it into the appropriate HR tag.
+The more dashes, the larger the size.</p>
+
+<p>I refactored this but of code as follows.
+Note that I changed the name of the size field to reflect its true purpose.
+It held the number of extra dashes.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">render</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="nc">HtmlTag</span> <span class="n">hr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HtmlTag</span><span class="o">(</span><span class="s">"hr"</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">extraDashes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span>
+      <span class="n">hr</span><span class="o">.</span><span class="na">addAttributes</span><span class="o">(</span><span class="s">"size"</span><span class="o">,</span> <span class="n">hrSize</span><span class="o">(</span><span class="n">extraDashes</span><span class="o">));</span>
+    <span class="k">return</span> <span class="n">hr</span><span class="o">.</span><span class="na">html</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="nc">String</span> <span class="nf">hrSize</span><span class="o">(</span><span class="kt">int</span> <span class="n">height</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">hrSize</span> <span class="o">=</span> <span class="n">height</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"%d"</span><span class="o">,</span> <span class="n">hrSize</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This change separates the two levels of abstraction nicely.
+The <code class="language-plaintext highlighter-rouge">render</code> function simply constructs a HR tag, without having to know anything about the HTML syntax of that tag.
+The <code class="language-plaintext highlighter-rouge">HtmlTag</code> module takes care of all the nasty syntax issues.</p>
+
+<p>Indeed, by making this change I caught a subtle error.
+the original code did not put the closing slash on the HR tag, as the XHTML standard would have it.
+(In other words, it emitted <code class="language-plaintext highlighter-rouge">&lt;hr&gt;</code> instead of <code class="language-plaintext highlighter-rouge">&lt;hr/&gt;</code>.)
+The <code class="language-plaintext highlighter-rouge">HtmlTag</code> module had been changed to conform to XHTML long ago.</p>
+
+<p>Separating levels of abstraction is one of the most important functions of refactoring, and it’s one of the hardest to do well.
+As an example, look at the code below.
+This was my first attempt at separating the abstraction levels in the <code class="language-plaintext highlighter-rouge">HruleWidget.render</code> method.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">render</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="nc">HtmlTag</span> <span class="n">hr</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HtmlTag</span><span class="o">(</span><span class="s">"hr"</span><span class="o">);</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">hr</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"size"</span><span class="o">,</span> <span class="s">""</span><span class="o">+(</span><span class="n">size</span><span class="o">+</span><span class="mi">1</span><span class="o">));</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">hr</span><span class="o">.</span><span class="na">html</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>My goal, at this point, was to create the necessary the necessary separation and get the tests to pass.
+I accomplished that goal easily, but the result was a function that <em>still</em> had mixed levels of abstraction.
+In this case the mixed levels were the construction of the HR tag and the interpretation and formatting of the <code class="language-plaintext highlighter-rouge">size</code> variable.
+This points out that when you break a function along lines of abstraction, you often uncover new lines of abstraction that were obscured by the previous structure.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g35-keep-configurable-data-at-high-levels.html">G35: Keep Configurable Data at High Levels</a>
+    </h2>
+    <p>If you have a constant such as a default or configuration value that is known and expected at a high level of abstraction, do not bury it in a low-level function.
+Expose it as an argument to that low-level function called from the high-level function.
+Consider the following code from FitNesse:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="nc">Arguments</span> <span class="n">arguments</span> <span class="o">=</span> <span class="n">parseCommandLine</span><span class="o">(</span><span class="n">args</span><span class="o">);</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Arguments</span>
+  <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DEFAULT_PATH</span> <span class="o">=</span> <span class="s">"."</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">DEFAULT_ROOT</span> <span class="o">=</span> <span class="s">"FitNesseRoot"</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT_PORT</span> <span class="o">=</span> <span class="mi">80</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">DEFAULT_VERSION_DAYS</span> <span class="o">=</span> <span class="mi">14</span><span class="o">;</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The command-line arguments are parsed in the very first executable line of FitNesse.
+The default values of those arguments are specified at the top of the <code class="language-plaintext highlighter-rouge">Argument</code> class.
+You don’t have to go looking in low levels of the system for statements like this one:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="o">(</span><span class="n">arguments</span><span class="o">.</span><span class="na">port</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="c1">// use 80 by default</span>
+</code></pre></div></div>
+
+<p>The configuration constants reside at a very high level and are easy to change.
+They get passed down to the rest of the application.
+The lower levels of the application do not own the values of these constants.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/general/g36-avoid-transitive-navigation.html">G36: Avoid Transitive Navigation</a>
+    </h2>
+    <p>In general we don’t want a single module to know much about its collaborators.
+More specifically, if <code class="language-plaintext highlighter-rouge">A</code> collaborates with <code class="language-plaintext highlighter-rouge">B</code>, and <code class="language-plaintext highlighter-rouge">B</code> collaborates with <code class="language-plaintext highlighter-rouge">C</code>, we don’t want modules that use <code class="language-plaintext highlighter-rouge">A</code> to know about <code class="language-plaintext highlighter-rouge">C</code>. (For example, we don’t want <code class="language-plaintext highlighter-rouge">a.getB().getC().doSomething();</code>.)</p>
+
+<p>This is sometimes called the Law of Demeter.
+The Pragmatic Programmers call it “Writing Shy Code.”[^12]
+In either case it comes down to making sure that modules know only about their immediate collaborators and do not know the navigation map of the whole system.</p>
+
+<p>If many modules used some form of the statement <code class="language-plaintext highlighter-rouge">a.getB().getC()</code>, then it would be difficult to change the design and architecture to interpose a <code class="language-plaintext highlighter-rouge">Q</code> between <code class="language-plaintext highlighter-rouge">B</code> and <code class="language-plaintext highlighter-rouge">C</code>.
+You’d have to find every instance of <code class="language-plaintext highlighter-rouge">a.getB().getC()</code> and convert it to <code class="language-plaintext highlighter-rouge">a.getB().getQ().getC()</code>.
+This is how architectures become rigid.
+Too many modules know too much about the architecture.</p>
+
+<p>Rather we want our immediate collaborators to offer all the services we need.
+We should not have to roam through the object graph of the system, hunting for the method we want to call.
+Rather we should simply be able to say:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="n">myCollaborator</span><span class="o">.</span><span class="na">doSomething</span><span class="o">()</span>
+</code></pre></div></div>
+
+</div>
+
+
+
+
+<h1>Java</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/java/j1-avoid-long-import-lists-by-using-wildcards.html">J1: Avoid Long Import Lists by Using Wildcards</a>
+    </h2>
+    <p>If you use two or more classes from a package, then import the whole package with</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kn">import</span> <span class="nn">package.*</span><span class="o">;</span>
+</code></pre></div></div>
+
+<p>Long lists of imports are daunting to the reader.
+We don’t want to clutter up the tops of our modules with 80 lines of imports.
+Rather we want the imports to be a concise statements about which packages we collaborate with.</p>
+
+<p>Specific imports are hard dependencies, whereas wildcard imports are not.
+If you specifically import a class, then that class <em>must</em> exist.
+But if you import a package with a wildcard, no particular classes need to exist.
+The import statement simply adds the package to the search path when hunting for names.
+So no true dependency is created by such imports, and they therefore serve to keep our modules less coupled.</p>
+
+<p>There are times when the long list of specific imports can be useful.
+For example, if you are dealing with legacy code and you want to find out what classes you need to build mocks and stubs for, you can walk down the list of specific imports to find out the true qualified names of all those classes and then put the appropriate stubs in place.
+However, this use for specific imports is very rare.
+Furthermore, most modern IDEs will allow you to convert the wildcarded imports to a list of specific imports with a single command.
+So even in the legacy case it’s better to import wildcards.</p>
+
+<p>Wildcard imports can sometimes cause name conflicts and ambiguities.
+Two classes with the same name, but in different packages, will need to be specifically imported, or at least specifically qualified when used.
+This can be a nuisance but is rare enough that using wildcard imports is still generally better than specific imports.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/java/j2-dont-inherit-constants.html">J2: Don't Inherit Constants</a>
+    </h2>
+    <p>I have seen this several times it always makes me grimace.
+A programmer puts some constants in an interface and then gains access to those constants by inheriting that interface.
+Take a look at the following code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyEmployee</span> <span class="kd">extends</span> <span class="nc">Employee</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">tenthsWorked</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">double</span> <span class="n">hourlyRate</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculatePay</span><span class="o">()</span> <span class="o">{</span>
+      <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">tenthsWorked</span><span class="o">,</span> <span class="no">TENTHS_PER_WEEK</span><span class="o">);</span>
+      <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">;</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">Money</span><span class="o">(</span>
+        <span class="n">hourlyRate</span> <span class="o">*</span> <span class="o">(</span><span class="n">tenthsWorked</span> <span class="o">+</span> <span class="no">OVERTIME_RATE</span> <span class="o">*</span> <span class="n">overTime</span><span class="o">)</span>
+      <span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Where di constants <code class="language-plaintext highlighter-rouge">TENTHS_PER_WEEK</code> and <code class="language-plaintext highlighter-rouge">OVERTIME_RATE</code> come from?
+They might have come from class <code class="language-plaintext highlighter-rouge">Employee</code>; so let’s take a look at that:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">abstract</span> <span class="kd">class</span> <span class="nc">Employee</span> <span class="kd">implements</span> <span class="nc">PayrollConstants</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">boolean</span> <span class="nf">isPayday</span><span class="o">();</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="nc">Money</span> <span class="nf">calculatePay</span><span class="o">();</span>
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">deliverPay</span><span class="o">(</span><span class="nc">Money</span> <span class="n">pay</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Nope, not there. But then where? Look closely at class <code class="language-plaintext highlighter-rouge">Employee</code>. It implements <code class="language-plaintext highlighter-rouge">PayrollConstants</code>.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">PayrollConstants</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">TENTHS_PER_WEEK</span> <span class="o">=</span> <span class="mi">400</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">double</span> <span class="no">OVERTIME_RATE</span> <span class="o">=</span> <span class="mf">1.5</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is a hideous practice! The constants are hidden at the top of the inheritance hierarchy.
+Ick!
+Don’t use inheritance as a way to cheat the scoping rules of the language.
+Use a static import instead.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyEmployee</span> <span class="kd">extends</span> <span class="nc">Employee</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">tenthsWorked</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kt">double</span> <span class="n">hourlyRate</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculatePay</span><span class="o">()</span> <span class="o">{</span>
+      <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">tenthsWorked</span><span class="o">,</span> <span class="no">TENTHS_PER_WEEK</span><span class="o">);</span>
+      <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">;</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">Money</span><span class="o">(</span>
+        <span class="n">hourlyRate</span> <span class="o">*</span> <span class="o">(</span><span class="n">tenthsWorked</span> <span class="o">+</span> <span class="no">OVERTIME_RATE</span> <span class="o">*</span> <span class="n">overTime</span><span class="o">)</span>
+      <span class="o">);</span>
+    <span class="o">}</span>
+    <span class="o">...</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/java/j3-constants-versus-enums.html">J3: Constants versus Enums</a>
+    </h2>
+    <p>Now that <code class="language-plaintext highlighter-rouge">enum</code>s have been added to the language (Java 5), use them!
+Don’t keep using the old trick of <code class="language-plaintext highlighter-rouge">public static final int</code>s.
+The meaning of <code class="language-plaintext highlighter-rouge">int</code>s can get lost.
+The meaning of <code class="language-plaintext highlighter-rouge">enum</code> cannot, because they belong to an enumeration that is named.</p>
+
+<p>What’s more, study the syntax for <code class="language-plaintext highlighter-rouge">enum</code>s carefully.
+They can have methods and fields.
+This makes them more powerful tools that allow much more expression and flexibility than <code class="language-plaintext highlighter-rouge">int</code>s.
+Consider this variation on the payroll code:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyEmployee</span> <span class="kd">extends</span> <span class="nc">Employee</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">tenthsWorked</span><span class="o">;</span>
+    <span class="nc">HourlyPayGrade</span> <span class="n">grade</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculatePay</span><span class="o">()</span> <span class="o">{</span>
+      <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">tenthsWorked</span><span class="o">,</span> <span class="no">TENTHS_PER_WEEK</span><span class="o">);</span>
+      <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">;</span>
+      <span class="k">return</span> <span class="k">new</span> <span class="nf">Money</span><span class="o">(</span>
+        <span class="n">grade</span><span class="o">.</span><span class="na">rate</span><span class="o">()</span> <span class="o">*</span> <span class="o">(</span><span class="n">tenthsWorked</span> <span class="o">+</span> <span class="no">OVERTIME_RATE</span> <span class="o">*</span> <span class="n">overTime</span><span class="o">)</span>
+      <span class="o">);</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">enum</span> <span class="nc">HourlyPayGrade</span> <span class="o">{</span>
+    <span class="no">APPRENTICE</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">double</span> <span class="nf">rate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mf">1.0</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">},</span>
+    <span class="no">LIEUTENANT_JOURNEYMAN</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">double</span> <span class="nf">rate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mf">1.2</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">},</span>
+    <span class="no">JOURNEYMAN</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">double</span> <span class="nf">rate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mf">1.5</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">},</span>
+    <span class="no">MASTER</span> <span class="o">{</span>
+      <span class="kd">public</span> <span class="kt">double</span> <span class="nf">rate</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mf">2.0</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">};</span>
+
+    <span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">double</span> <span class="nf">rate</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+</div>
+
+
+
+
+<h1>Names</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n1-choose-descriptive-names.html">N1: Choose Descriptive Names</a>
+    </h2>
+    <p>Don’t be too quick to choose a name.
+ake sure the name is descriptive.
+Remember that meanings tend to drift as software evolves, so frequently reevaluate the appropriateness of the names you choose.</p>
+
+<p>This is not just a “feel-good” recommendation.
+Names in software are 90 percent of what make software readable.
+You need to take the time to choose them wisely and keep them relevant.
+Names are too important to treat carelessly.</p>
+
+<p>Consider the code below.
+What does it do?
+If I show you the code with well-chosen names, it will make perfect sense to you, but like this it’s just a hodgepodge of symbols and magic numbers.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">x</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">kk</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">kk</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">kk</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">l</span><span class="o">[</span><span class="n">z</span><span class="o">]</span> <span class="o">==</span> <span class="mi">10</span><span class="o">)</span>
+      <span class="o">{</span>
+        <span class="n">q</span> <span class="o">+=</span> <span class="mi">10</span> <span class="o">+</span> <span class="o">(</span><span class="n">l</span><span class="o">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="n">l</span><span class="o">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="o">]);</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">;</span>
+      <span class="o">}</span>
+      <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">l</span><span class="o">[</span><span class="n">z</span><span class="o">]</span> <span class="o">+</span> <span class="n">l</span><span class="o">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">==</span> <span class="mi">10</span><span class="o">)</span>
+      <span class="o">{</span>
+        <span class="n">q</span> <span class="o">+=</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">l</span><span class="o">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="o">];</span>
+        <span class="n">z</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">;</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">q</span> <span class="o">+=</span> <span class="n">l</span><span class="o">[</span><span class="n">z</span><span class="o">]</span> <span class="o">+</span> <span class="n">l</span><span class="o">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+        <span class="n">z</span> <span class="o">+=</span><span class="mi">2</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">q</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Here is the code the way it should be written.
+This snippet is actually less complete than the one above.
+Yet you can infer immediately what it is trying to do, and you could very likely write the missing functions based on that inferred meaning.
+That magic numbers are no longer magic, and the structure of the algorithm is compellingly descriptive.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kt">int</span> <span class="nf">score</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">frame</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">frameNumber</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">frameNumber</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">frameNumber</span><span class="o">++)</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">isStrike</span><span class="o">(</span><span class="n">frame</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">nextTwoBallsForStrike</span><span class="o">(</span><span class="n">frame</span><span class="o">);</span>
+        <span class="n">frame</span> <span class="o">+=</span> <span class="mi">1</span><span class="o">;</span>
+      <span class="o">}</span>
+      <span class="k">else</span> <span class="nf">if</span> <span class="o">(</span><span class="n">isSpare</span><span class="o">(</span><span class="n">frame</span><span class="o">))</span> <span class="o">{</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">nextBallForSpare</span><span class="o">(</span><span class="n">frame</span><span class="o">);</span>
+        <span class="n">frame</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">;</span>
+      <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+        <span class="n">score</span> <span class="o">+=</span> <span class="n">twoBallsInFrame</span><span class="o">(</span><span class="n">frame</span><span class="o">);</span>
+        <span class="n">frame</span> <span class="o">+=</span> <span class="mi">2</span><span class="o">;</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">score</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The power of carefully chosen names is that they overload the structure of the code with description.
+That overloading sets the readers’ expectations about what the other functions in the module do.
+You can infer the implementation of <code class="language-plaintext highlighter-rouge">isStrike()</code> by looking at the code above.
+When you read the <code class="language-plaintext highlighter-rouge">isStrike</code> method, it will be “pretty much what you expected.”<sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">1</a></sup></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isStrike</span><span class="o">(</span><span class="kt">int</span> <span class="n">frame</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">rolls</span><span class="o">[</span><span class="n">frame</span><span class="o">]</span> <span class="o">==</span> <span class="mi">10</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:13" role="doc-endnote">
+      <p>See Ward Cunningham’s quote on page 11. <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n2-choose-names-at-the-appropriate-level-of-abstraction.html">N2: Choose Names at the Appropriate Level of Abstraction</a>
+    </h2>
+    <p>Don’t pick names that communicate implementation; choose names that reflect the level of abstraction of the class or function you are working in.
+This is hard to do.
+Again, people are just too good at mixing levels of abstractions.
+Each time you make a pass over your code, you will likely find some variable that is named at too low a level.
+You should take the opportunity to change those names when you find them.
+Making code readable requires a dedication to continuous improvement.
+Consider the <code class="language-plaintext highlighter-rouge">Modem</code> interface below:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Modem</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">dial</span><span class="o">(</span><span class="nc">String</span> <span class="n">phoneNumber</span><span class="o">);</span>
+    <span class="kt">boolean</span> <span class="nf">disconnect</span><span class="o">();</span>
+    <span class="kt">boolean</span> <span class="nf">send</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">);</span>
+    <span class="kt">char</span> <span class="nf">recv</span><span class="o">();</span>
+    <span class="nc">String</span> <span class="nf">getConnectedPhoneNumber</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>At first this looks fine.
+The functions all seem appropriate.
+Indeed, for many applications they are.
+But now consider an application in which some modems aren’t connected by dialing.
+Rather they are connected permanently by hard wiring them together (think of the cable modems that provide Internet access to most homes nowadays).
+Perhaps some are connected by sending port number to a switch over a USB connection.
+Clearly the notion of phone numbers is at the wrong level of abstraction.
+A better naming strategy for this scenario might be:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Modem</span> <span class="o">{</span>
+    <span class="kt">boolean</span> <span class="nf">connect</span><span class="o">(</span><span class="nc">String</span> <span class="n">connectionLocator</span><span class="o">);</span>
+    <span class="kt">boolean</span> <span class="nf">disconnect</span><span class="o">();</span>
+    <span class="kt">boolean</span> <span class="nf">send</span><span class="o">(</span><span class="kt">char</span> <span class="n">c</span><span class="o">);</span>
+    <span class="kt">char</span> <span class="nf">recv</span><span class="o">();</span>
+    <span class="nc">String</span> <span class="nf">getConnectedLocator</span><span class="o">();</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now the names don’t make any commitments about phone numbers.
+They can still be used for phone numbers, or they could be used for any other kind of connection strategy.
+```</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n3-use-standard-nomenclature-where-possible.html">N3: Use Standard Nomenclature Where Possible</a>
+    </h2>
+    <p>Names are easier to understand if they are based on existing convention or usage.
+For example, if you are using the Decorator pattern, you should use the word <code class="language-plaintext highlighter-rouge">Decorator</code> in the names of the decorating class.
+For example, <code class="language-plaintext highlighter-rouge">AutoHangupModemDecorator</code> might be the name of a class that decorate <code class="language-plaintext highlighter-rouge">Modem</code> with the ability to automatically hang up at the end of a session.</p>
+
+<p>Patterns are just one kind of standard.
+In Java, for example, functions that convert objects to String representations are often named <code class="language-plaintext highlighter-rouge">toString</code>.
+It is better to follow conventions like these than to invent your own.</p>
+
+<p>Teams will often invent their own standard system of names for a particular project.
+Eric Evans refers to this as <em>ubiquitous language</em> for the project.<sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">1</a></sup>
+Your code should use the terms from this language extensively.
+In short, the more you can use names that are overloaded with special meanings that are relevant to your project, the easier it will be for readers to know what your code is talking about.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:14" role="doc-endnote">
+      <p>[DDD]. <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n4-unambiguous-names.html">N4: Unambiguous Names</a>
+    </h2>
+    <p>Choose names that make the working of the function or variable unambiguous.
+Consider this example from FitNesse:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">private</span> <span class="nc">String</span> <span class="nf">doRename</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">Exception</span>
+  <span class="o">{</span>
+    <span class="k">if</span><span class="o">(</span><span class="n">refactorReferences</span><span class="o">)</span>
+      <span class="n">renameReferences</span><span class="o">();</span>
+    <span class="n">renamePage</span><span class="o">();</span>
+
+    <span class="n">pathToRename</span><span class="o">.</span><span class="na">removeNameFromEnd</span><span class="o">();</span>
+    <span class="n">pathToRename</span><span class="o">.</span><span class="na">addNameToEnd</span><span class="o">();</span>
+    <span class="k">return</span> <span class="nc">PathParser</span><span class="o">.</span><span class="na">render</span><span class="o">(</span><span class="n">pathToRename</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>The name of this function does not say what the function does except in broad and vague terms.
+This is emphasized by the fact that there is a function named <code class="language-plaintext highlighter-rouge">renamePage</code> inside the function named <code class="language-plaintext highlighter-rouge">doRename</code>!
+What do the names tell you about the difference between the two function?
+Nothing.</p>
+
+<p>A better name for that function is <code class="language-plaintext highlighter-rouge">renamePageAndOptionallyAllReferences</code>.
+This may seem long, and it is, but it’s only called from one place in the module, so it’s explanatory value outweighs the length.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n5-use-long-names-for-long-scopes.html">N5: Use Long Names for Long Scopes</a>
+    </h2>
+    <p>The length of a name should be related to the length of the scope.
+You can use very short variable names for tiny scopes, but for big scopes you should use longer names.</p>
+
+<p>Variable names like <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> are just fine if their scope if five lines long.
+Consider this snippet from the old standard “Bowling Game”:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">rollMany</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="kt">int</span> <span class="n">pins</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+      <span class="n">g</span><span class="o">.</span><span class="na">roll</span><span class="o">(</span><span class="n">pins</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is perfectly clear and would be obfuscated if the variable <code class="language-plaintext highlighter-rouge">i</code> were replaced with something annoying like <code class="language-plaintext highlighter-rouge">rollCount</code>.
+On the other hand, variables and functions with short names lose their meaning over long distances.
+So the longer the scope of the name, the longer and more precise the name should be.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n6-avoid-encodings.html">N6: Avoid Encodings</a>
+    </h2>
+    <p>Names should not be encoded with type of scope information.
+Prefixes such as <code class="language-plaintext highlighter-rouge">m_</code> or <code class="language-plaintext highlighter-rouge">f</code> are useless in today’s environments.
+Also project and/or subsystem encodings such as <code class="language-plaintext highlighter-rouge">vis_</code> (for visual imaging system) are distracting and redundant.
+Again, today’s environments provide all that information without having to mangle the names.
+Keep your names free of Hungarian pollution.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/names/n7-names-should-describe-side-effects.html">N7: Names Should Describe Side-Effects</a>
+    </h2>
+    <p>Names should describe everything that a function, variable, or class is or does.
+Don’t hide the effects with a name.
+Do’t use a simple verb to describe a function that does more than just a simple action.
+For example, consider this code from TestNG:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">public</span> <span class="nc">ObjectOutputStream</span> <span class="nf">getOos</span><span class="o">()</span> <span class="kd">throws</span> <span class="nc">IOException</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">m_oos</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+      <span class="n">m_oos</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ObjectOutputStream</span><span class="o">(</span><span class="n">m_socket</span><span class="o">.</span><span class="na">getOutputStream</span><span class="o">());</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="n">m_oos</span><span class="o">;</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This function does a bit more than get an “oos”; it creates the “oos” if it hasn’t been created already.
+Thus, a better name might be <code class="language-plaintext highlighter-rouge">createOrReturnOos</code>.</p>
+
+</div>
+
+
+
+
+
+
+<h1>Tests</h1>
+
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t1-insufficient-tests.html">T1: Insufficient Tests</a>
+    </h2>
+    <p>How many tests should be in a test suite?
+Unfortunately, the metric many programmers use is “That seems like enough”.
+A test suite should test everything that could possible break.
+The tests are insufficient so long as there are conditions that have not been explored by the tests or calculation that have not been validated.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t2-use-a-coverage-tool.html">T2: Use a Coverage Tool!</a>
+    </h2>
+    <p>Coverage tools report gaps in your testing strategy.
+They make it easy to find modules, classes, and functions that are insufficiently tested.
+Most IDEs give you a visual indication, marking lines that are covered in green and those that are uncovered in red.
+This makes it quick and easy to find <code class="language-plaintext highlighter-rouge">if</code> or <code class="language-plaintext highlighter-rouge">catch</code> statements whose bodies haven’t been checked.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t3-dont-skip-trivial-tests.html">T3: Don't Skip Trivial Tests</a>
+    </h2>
+    <p>They are easy to write and their documentary value is higher than the code to produce them.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t4-an-ignored-test-is-a-question-about-an-ambiguity.html">T4: An Ignored Test Is a Question about an Ambiguity</a>
+    </h2>
+    <p>Sometimes we are uncertain about a behavioral detail because the requirements are unclear.
+We can express our question about the requirements as a test that is commented out, or as a test that annotated with <code class="language-plaintext highlighter-rouge">@Ignore</code>.
+Which you choose depends upon whether the ambiguity is about something that would compile or not.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t5-test-boundary-conditions.html">T5: Test Boundary Conditions</a>
+    </h2>
+    <p>Take special care to test boundary conditions.
+We often get the middle of an algorithm right but misjudge the boundaries.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t6-exhaustively-test-near-bugs.html">T6: Exhaustively Test Near Bugs</a>
+    </h2>
+    <p>Bugs tend to congregate.
+When you find a bug in a function, it is wise to do an exhaustive test of that function.
+You’ll probably find that the bug was not alone.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t7-patterns-of-failure-are-revealing.html">T7: Patterns of Failure Are Revealing</a>
+    </h2>
+    <p>Sometimes you can diagnose a problem by finding patterns in the way the test cases fail.
+This is another argument for making the test cases as complete as possible.
+Complete test cases, ordered in a reasonable way, expose patterns.</p>
+
+<p>As a simple example, suppose you noticed that all tests with an input larger than five characters failed?
+or what if any test that passed a negative number into a second argument of a function failed?
+Sometimes just seeing the pattern of red and green on the test report is enough to spark the “Aha!” that leads to the solution.
+Look page at page 267 to see an interesting example of this in the <code class="language-plaintext highlighter-rouge">SerialDate</code> example.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t8-test-coverage-patterns-can-be-revealing.html">T8: Test Coverage Patterns Can Be Revealing</a>
+    </h2>
+    <p>Looking at the code that is or is not executed by the passing tests gives clues to why the failing tests fail.</p>
+
+</div>
+
+<div class="smell">
+    <h2>
+        <a class="smell-link" href="/tests/t9-tests-should-be-fast.html">T9: Tests Should Be Fast</a>
+    </h2>
+    <p>A slow test is a test that won’t get run.
+When things get tight, it’s the slow tests that will be dropped from the suite.
+So <em>do what you must</em> to keep your tests fast.</p>
+
+</div>
+
+
+
+
+<h1>Conclusion</h1>
+<p>
+This list of heuristics and smells could hardly be said to be complete.
+Indeed, I'm not sure that such a list can *ever* be complete.
+But perhaps completeness should not be the goal, because what this list *does* do is imply a value system.
+
+Indeed, that value system has been the goal, and the topic, of this book.
+Clean code is not written by following a set of rules.
+You don't become a software craftsman by learning a list of heuristics.
+professionalism and craftsmanship come from values that drive disciplines.
+</p> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+<script>
+  anchors.options.visible = 'always';
+  anchors.add();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script src="assets/js/create-copy-markdown-buttons.js"></script>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

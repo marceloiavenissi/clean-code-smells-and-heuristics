@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Use Long Names for Long Scopes | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Use Long Names for Long Scopes" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="The length of a name should be related to the length of the scope. You can use very short variable names for tiny scopes, but for big scopes you should use longer names." />
+<meta property="og:description" content="The length of a name should be related to the length of the scope. You can use very short variable names for tiny scopes, but for big scopes you should use longer names." />
+<link rel="canonical" href="http://localhost:4000/names/n5-use-long-names-for-long-scopes.html" />
+<meta property="og:url" content="http://localhost:4000/names/n5-use-long-names-for-long-scopes.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Use Long Names for Long Scopes" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"The length of a name should be related to the length of the scope. You can use very short variable names for tiny scopes, but for big scopes you should use longer names.","headline":"Use Long Names for Long Scopes","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/names/n5-use-long-names-for-long-scopes.html"},"url":"http://localhost:4000/names/n5-use-long-names-for-long-scopes.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>N5: Use Long Names for Long Scopes</h2>
+<p>The length of a name should be related to the length of the scope.
+You can use very short variable names for tiny scopes, but for big scopes you should use longer names.</p>
+
+<p>Variable names like <code class="language-plaintext highlighter-rouge">i</code> and <code class="language-plaintext highlighter-rouge">j</code> are just fine if their scope if five lines long.
+Consider this snippet from the old standard “Bowling Game”:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="kd">private</span> <span class="kt">void</span> <span class="nf">rollMany</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="kt">int</span> <span class="n">pins</span><span class="o">)</span>
+  <span class="o">{</span>
+    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span>
+      <span class="n">g</span><span class="o">.</span><span class="na">roll</span><span class="o">(</span><span class="n">pins</span><span class="o">);</span>
+  <span class="o">}</span>
+</code></pre></div></div>
+
+<p>This is perfectly clear and would be obfuscated if the variable <code class="language-plaintext highlighter-rouge">i</code> were replaced with something annoying like <code class="language-plaintext highlighter-rouge">rollCount</code>.
+On the other hand, variables and functions with short names lose their meaning over long distances.
+So the longer the scope of the name, the longer and more precise the name should be.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

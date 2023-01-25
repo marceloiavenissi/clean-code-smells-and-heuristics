@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Feature Envy | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Feature Envy" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This is one of Martin Fowler’s code smells1. The methods of a class should be interested in the variables and functions of the class they belong to, and not the variables and functions of other classes. When a method uses accessors and mutators of some other object to manipulate the data within that object, then it envies the scope of the class of that other object. It wishes that it were inside that other class so that it could have direct access to the variables it is manipulating. For example: [Refactoring]. &#8617;" />
+<meta property="og:description" content="This is one of Martin Fowler’s code smells1. The methods of a class should be interested in the variables and functions of the class they belong to, and not the variables and functions of other classes. When a method uses accessors and mutators of some other object to manipulate the data within that object, then it envies the scope of the class of that other object. It wishes that it were inside that other class so that it could have direct access to the variables it is manipulating. For example: [Refactoring]. &#8617;" />
+<link rel="canonical" href="http://localhost:4000/general/g14-feature-envy.html" />
+<meta property="og:url" content="http://localhost:4000/general/g14-feature-envy.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Feature Envy" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"This is one of Martin Fowler’s code smells1. The methods of a class should be interested in the variables and functions of the class they belong to, and not the variables and functions of other classes. When a method uses accessors and mutators of some other object to manipulate the data within that object, then it envies the scope of the class of that other object. It wishes that it were inside that other class so that it could have direct access to the variables it is manipulating. For example: [Refactoring]. &#8617;","headline":"Feature Envy","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g14-feature-envy.html"},"url":"http://localhost:4000/general/g14-feature-envy.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G14: Feature Envy</h2>
+<p>This is one of Martin Fowler’s code smells<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">1</a></sup>. The methods of a class should be interested in the variables and functions of the class they belong to, and not the variables and functions of other classes.
+When a method uses accessors and mutators of some other object to manipulate the data within that object, then it <em>envies</em> the scope of the class of that other object.
+It wishes that it were inside that other class so that it could have direct access to the variables it is manipulating.
+For example:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyPayCalculator</span> <span class="o">{</span>
+  <span class="kd">public</span> <span class="nc">Money</span> <span class="nf">calculateWeeklyPay</span><span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">tenthRate</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthRate</span><span class="o">().</span><span class="na">getPennies</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">tenthsWorked</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">();</span>
+    <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="mi">400</span><span class="o">,</span> <span class="n">tenthsWorked</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">);</span>
+    <span class="kt">int</span> <span class="n">straightPay</span> <span class="o">=</span> <span class="n">straightTime</span> <span class="o">*</span> <span class="n">tenthRate</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">overtimePay</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">overTime</span><span class="o">*</span><span class="n">tenthRate</span><span class="o">*</span><span class="mf">1.5</span><span class="o">);</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nf">Money</span><span class="o">(</span><span class="n">straightPay</span> <span class="o">+</span> <span class="n">overtimePay</span><span class="o">);</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>The <code class="language-plaintext highlighter-rouge">calculateWeeklyPay</code> method reaches into the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> object to get the data on which it operates.
+The <code class="language-plaintext highlighter-rouge">calculateWeeklyPay</code> method <em>envies</em> the scope of the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code>.
+It “wishes” that it could be inside <code class="language-plaintext highlighter-rouge">HourlyEmployee</code>.</p>
+
+<p>All else being equal, we want to eliminate Feature Envy because it exposes the internals of one class to another.
+Sometimes, however, Feature Envy is a necessary evil.
+Consider the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HourlyEmployeeReport</span> <span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">HourlyEmployee</span> <span class="n">employee</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">HourlyEmployeeReport</span><span class="o">(</span><span class="nc">HourlyEmployee</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">employee</span> <span class="o">=</span> <span class="n">e</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="nc">String</span> <span class="nf">reportHours</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span>
+      <span class="s">"Name: %s\tHours:%d.%1d\n"</span><span class="o">,</span>
+      <span class="n">employee</span><span class="o">.</span><span class="na">getName</span><span class="o">(),</span>
+      <span class="n">employee</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()/</span><span class="mi">10</span><span class="o">,</span>
+      <span class="n">employee</span><span class="o">.</span><span class="na">getTenthsWorked</span><span class="o">()%</span><span class="mi">10</span><span class="o">);</span>
+    <span class="o">)</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Clearly, the <code class="language-plaintext highlighter-rouge">reportHours</code> method envies the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> class. On the other hand, we don’t want <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> to have to know about the format of the report.
+Moving that format string into the <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> class would violate several principles of object oriented design<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">2</a></sup>.
+It would couple <code class="language-plaintext highlighter-rouge">HourlyEmployee</code> to the format of the report, exposing it to changes in that format.</p>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:6" role="doc-endnote">
+      <p>[Refactoring]. <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>Specifically, the Single Responsibility Principle, the Open Closed Principle, and the Common Closure Principle. See [PPP]. <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>

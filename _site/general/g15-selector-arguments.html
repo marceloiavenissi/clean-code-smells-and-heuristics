@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!-- This is a modified copy of the Primer theme default template. -->
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Selector Arguments | Clean Code: Smells and Heuristics</title>
+<meta name="generator" content="Jekyll v3.9.2" />
+<meta property="og:title" content="Selector Arguments" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="There is hardly anything more abominable than a dangling false argument at the end of a function call. What does it mean? What would it change if it were true? Not only is the purpose of a selector argument difficult to remember, each selector argument combines many functions into one. Selector arguments are just a lazy way to avoid splitting a large function into several smaller functions. Consider:" />
+<meta property="og:description" content="There is hardly anything more abominable than a dangling false argument at the end of a function call. What does it mean? What would it change if it were true? Not only is the purpose of a selector argument difficult to remember, each selector argument combines many functions into one. Selector arguments are just a lazy way to avoid splitting a large function into several smaller functions. Consider:" />
+<link rel="canonical" href="http://localhost:4000/general/g15-selector-arguments.html" />
+<meta property="og:url" content="http://localhost:4000/general/g15-selector-arguments.html" />
+<meta property="og:site_name" content="Clean Code: Smells and Heuristics" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-01-25T16:03:22-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Selector Arguments" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-25T16:03:22-03:00","datePublished":"2023-01-25T16:03:22-03:00","description":"There is hardly anything more abominable than a dangling false argument at the end of a function call. What does it mean? What would it change if it were true? Not only is the purpose of a selector argument difficult to remember, each selector argument combines many functions into one. Selector arguments are just a lazy way to avoid splitting a large function into several smaller functions. Consider:","headline":"Selector Arguments","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/general/g15-selector-arguments.html"},"url":"http://localhost:4000/general/g15-selector-arguments.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/assets/css/style.css?v=ba572daa07c1906a4717b6d1a927fd4bc27eedd8">
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/">Clean Code: Smells and Heuristics</a></h1>
+      
+
+      <h2>G15: Selector Arguments</h2>
+<p>There is hardly anything more abominable than a dangling false argument at the end of a function call.
+What does it mean?
+What would it change if it were <code class="language-plaintext highlighter-rouge">true</code>?
+Not only is the purpose of a selector argument difficult to remember, each selector argument combines many functions into one.
+Selector arguments are just a lazy way to avoid splitting a large function into several smaller functions.
+Consider:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">calculateWeeklyPay</span><span class="o">(</span><span class="kt">boolean</span> <span class="n">overtime</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">tenthRate</span> <span class="o">=</span> <span class="n">getTenthRate</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="n">tenthsWorked</span> <span class="o">=</span> <span class="n">getTenthsWorked</span><span class="o">();</span>
+  <span class="kt">int</span> <span class="n">straightTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="mi">400</span><span class="o">,</span> <span class="n">tenthsWorked</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">overTime</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">tenthsWorked</span> <span class="o">-</span> <span class="n">straightTime</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">straightPay</span> <span class="o">=</span> <span class="n">straightTime</span> <span class="o">*</span> <span class="n">tenthRate</span><span class="o">;</span>
+  <span class="kt">double</span> <span class="n">overtimeRate</span> <span class="o">=</span> <span class="n">overtime</span> <span class="o">?</span> <span class="mf">1.5</span> <span class="o">:</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">tenthRate</span><span class="o">;</span>
+  <span class="kt">int</span> <span class="n">overtimePay</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">overTime</span> <span class="o">*</span> <span class="n">overtimeRate</span><span class="o">);</span>
+  <span class="k">return</span> <span class="n">straightPay</span> <span class="o">+</span> <span class="n">overtimePay</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You call this function with a <code class="language-plaintext highlighter-rouge">true</code> if overtime is paid as time and a half, and with a <code class="language-plaintext highlighter-rouge">false</code> if overtime is paid as straight time.
+It’s bad enough that you must remember what <code class="language-plaintext highlighter-rouge">calculateWeeklyPay(false)</code> means whenever you happen to stumble across it.
+But the real shame of a function like this is that the author missed the opportunity to write the following:</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kt">int</span> <span class="nf">straightPay</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="nf">getTenthsWorked</span><span class="o">()</span> <span class="o">*</span> <span class="n">getTenthRate</span><span class="o">();</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">overTimePay</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kt">int</span> <span class="n">overTimeTenths</span> <span class="o">=</span> <span class="nc">Math</span><span class="o">.</span><span class="na">max</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="n">getTenthsWorked</span><span class="o">()</span> <span class="o">-</span> <span class="mi">400</span><span class="o">);</span>
+  <span class="kt">int</span> <span class="n">overTimePay</span> <span class="o">=</span> <span class="n">overTimeBonus</span><span class="o">(</span><span class="n">overTimeTenths</span><span class="o">);</span>
+  <span class="k">return</span> <span class="nf">straightPay</span><span class="o">()</span> <span class="o">+</span> <span class="n">overTimePay</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="kt">int</span> <span class="nf">overTimeBonus</span><span class="o">(</span><span class="kt">int</span> <span class="n">overTimeTenths</span><span class="o">)</span> <span class="o">{</span>
+  <span class="kt">double</span> <span class="n">bonus</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">getTenthRate</span><span class="o">()</span> <span class="o">*</span> <span class="n">overTimeTenths</span><span class="o">;</span>
+  <span class="k">return</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span> <span class="nc">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="n">bonus</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Of course, selectors needs not be <code class="language-plaintext highlighter-rouge">boolean</code>.
+They can be enums, integers, or any other type of argument that is used to select the behavior of the function.
+In general it is better to have many functions than to pass some code into a function to select the behavior.</p>
+
+
+      
+    </div>
+    
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-141700461-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+    
+  </body>
+</html>
